@@ -5,7 +5,6 @@ Projeto efetuado usando:
  - [Github Pages](https://docs.github.com/pt/pages)
 
 
-
 ## Autores
 
 - [@luiscruz](https://github.com/luiscruzcwb)
