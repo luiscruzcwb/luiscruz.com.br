@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="Luis Cruz/@luiscruz">
     <title>Olá!</title>
-    
+
     <!-- Favicon / Trocar a URL -->
     <link rel="shortcut icon" href="https://img.icons8.com/?size=512&id=52515&format=png" />
 
@@ -16,108 +16,94 @@
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" type="text/css" href="font/bootstrap-icons.css">
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-    
+
     <!-- Custom font styles for this template // Google Font -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 
 </head>
 
 <body>
 
-    <main>
-        <!--Photo-->
-        <div class="container-fluid photo" id="top">
-            <div class="row">
-                <div class="col">
-                    <p>
-                        <!-- Altere aqui o seu avatar. Utilizar proporção de 1:1 (Quadrado)-->
-                        <img src="img/luis_cruz_perfil.jpg">
-                    </p>
-                </div>
+    <main class="terminal">
+        <!-- Terminal Header -->
+        <div class="terminal-header">
+            <div class="terminal-buttons">
+                <span class="close"></span>
+                <span class="minimize"></span>
+                <span class="maximize"></span>
             </div>
+            <div class="terminal-title">user@luiscruz: ~</div>
         </div>
 
-        <!--Title-->
-        <div class="container-fluid title">
-            <div class="row">
-                <div class="col">
-                    <h1>Luis Cruz</h1>
-                    <!-- <h2>contato@luiscruz.com.br</h2> -->
+        <!-- Terminal Body -->
+        <div class="terminal-body">
+            <!-- Command: whoami -->
+            <div class="command-line">
+                <span class="prompt">user@luiscruz:~$</span> <span class="command">whoami</span>
+            </div>
+            <div class="output">
+                <div class="profile-section">
+                    <img src="img/luis_cruz_perfil.jpg" alt="Luis Cruz" class="profile-pic">
+                    <div class="profile-info">
+                        <h1>Luis Cruz</h1>
+                        <p>Analista de Infraestrutura e Segurança | DevOps & SRE</p>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!--Bio-->
-        <div class="container-fluid bio">
-            <div class="row">
-                <div class="col">
-                    <p>Analista de Infraestrutura e Segurança com foco em DevOps & SRE</p>  
+            <!-- Command: cat about.txt -->
+            <div class="command-line">
+                <span class="prompt">user@luiscruz:~$</span> <span class="command">cat about.txt</span>
+            </div>
+            <div class="output">
+                <p>Sou apaixonado por automação, nuvem e segurança. Transformo café em infraestrutura como código.</p>
+            </div>
+
+            <!-- Command: ls -la ./links -->
+            <div class="command-line">
+                <span class="prompt">user@luiscruz:~$</span> <span class="command">ls -la ./links</span>
+            </div>
+            <div class="output links-list">
+                <div class="link-item">
+                    <span class="permissions">drwxr-xr-x</span> <span class="user">root</span> <span
+                        class="group">root</span> <a href="https://medium.com/@luiscruzcwb"
+                        target="_blank">./portfolio_projetos</a>
+                </div>
+                <div class="link-item">
+                    <span class="permissions">drwxr-xr-x</span> <span class="user">root</span> <span
+                        class="group">root</span> <a href="https://wiki.luiscruz.com.br/" target="_blank">./wiki</a>
+                </div>
+                <div class="link-item">
+                    <span class="permissions">-rwxr--r--</span> <span class="user">root</span> <span
+                        class="group">root</span> <a href="curriculo_luis_fernando_ribas_da_cruz.pdf"
+                        target="_blank">./curriculo.pdf</a>
                 </div>
             </div>
-        </div>
 
-        <!--Links-->
-      
-        <div class="container-fluid links">
-            <div class="row">
-                <div class="col">
-                    <a href="https://medium.com/@luiscruzcwb"" target="_blank" class="botao">
-                        <p>Portfólio e Projetos</p>
-                    </a>
-
-                    <a href="https://wiki.luiscruz.com.br/" target="_blank" class="botao">
-                        <p>Wiki</p>
-                    </a>
-
-                    <a href="curriculo_luis_fernando_ribas_da_cruz.pdf" target="_blank" class="botao">
-                        <p>Currículo</p>
-                    </a>
-
-		
-
-                    
-         <!--            
-                    <a href="#" target="_blank" class="botao">
-                        <p>Link #2</p>
-                    </a>
-                    <a href="#" target="_blank" class="botao">
-                        <p>Link #3</p>
-                    </a>
-                    <a href="#" target="_blank" class="botao">
-                        <p>Link #4</p>
-                    </a>
-                    <a href="#" target="_blank" class="botao">
-                        <p>Link #5</p>
-                    </a>
-        -->
-                    
-                    <!-- Botão Extra // Utilize quantos quiser
-                    <a href="#" target="_blank" class="botao">
-                        <p>Link</p>
-                    -->
-                    </a>
-                </div>
+            <!-- Command: ./contact.sh -->
+            <div class="command-line">
+                <span class="prompt">user@luiscruz:~$</span> <span class="command">./contact.sh</span>
             </div>
-        </div>
+            <div class="output social-icons">
+                <a href="https://www.linkedin.com/in/luiscruzcwb/" target="_blank" title="LinkedIn"><i
+                        class="bi bi-linkedin"></i></a>
+                <a href="https://github.com/luiscruzcwb" target="_blank" title="Github"><i class="bi bi-github"></i></a>
+                <a href="https://gitlab.com/luiscruzcwb" target="_blank" title="Gitlab"><i class="bi bi-gitlab"></i></a>
+                <a href="mailto:contato@luiscruz.com.br" title="Email"><i class="bi bi-envelope"></i></a>
+                <a href="https://api.whatsapp.com/send?phone=5541991948576" target="_blank" title="WhatsApp"><i
+                        class="bi bi-telephone"></i></a>
+            </div>
 
-        <!--Social-->
-        <div class="container-fluid social">
-            <div class="row">
-                <div class="col">
-                    <ul>                        
-                        <li><a href="https://www.linkedin.com/in/luiscruzcwb/" target="_blank"><i class="bi bi-linkedin" style="font-size: 2rem;" title="LinkedIn"></i></a></li>
-                        <li><a href="https://github.com/luiscruzcwb" target="_blank"><i class="bi bi-github" style="font-size: 2rem;" title="Github"></i></a></li>
-                        <li><a href="https://gitlab.com/luiscruzcwb" target="_blank"><i class="bi bi-gitlab" style="font-size: 2rem;" title="Gitlab"></i></a></li>
-                        <li><a href="mailto:contato@luiscruz.com.br" target="_blank"><i class="bi bi-envelope" style="font-size: 2rem;" title="Email"></i></a></li>
-                        <li><a href="https://api.whatsapp.com/send?phone=5541991948576" target="_blank"><i class="bi bi-telephone" style="font-size: 2rem;" title="WhatsApp"></i></a></li>
-                    </ul>
-                </div>
+            <!-- Cursor -->
+            <div class="command-line">
+                <span class="prompt">user@luiscruz:~$</span> <span class="cursor">_</span>
             </div>
         </div>
     </main>
 
-<!--
+    <!--
     <footer>
         <div class="container-fluid">
             <div class="row">
@@ -142,7 +128,7 @@
 
 
 </body>
-    <!-- Bootstrap core JS -->
-    <script src="js/bootstrap.js"></script>
+<!-- Bootstrap core JS -->
+<script src="js/bootstrap.js"></script>
 
 </html>

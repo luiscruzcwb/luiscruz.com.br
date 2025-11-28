@@ -1,107 +1,257 @@
+/* Global Styles */
 body {
-    /* Mudar cor do fundo */
-    background-color: #000000b0!important;
-    /* Mudar família da fonte */
-    font-family:'Montserrat', sans-serif!important;
-    /* Mudar cor da fonte */
-    color: #ffffff!important;
-    /* Não alterar */
-    font-size: 1.1rem!important;
-    line-height: 1.5rem!important;
-    text-align: center!important;
-}
-
-.container-fluid {
-    max-width: 540px;
-}
-
-/* PHOTO */
-.photo {
-    margin-top: 40px;
-    margin-bottom: 40px;
-}
-
-.photo img {
-    border-radius: 50%;
-    max-width: 250px;
-}
-
-/* TITLE */
-.title h1 {
-    font-weight: 800;
-    font-size: 2.5rem;
-    line-height: 3rem;;
-}
-
-.title h2 {
-    font-weight: 500;
-    font-size: 1.5rem;
-    line-height: 2.5rem;;
-}
-
-/* LINKS*/
-.links {
-    margin-bottom: 40px;
-}
-
-/* BOTÃO */
-.botao {
-    /* Mudar cor da fonte do botão */
-    color: #000000;
-    /* Mudar cor de fundo do botão */
-    background-color: #ffffff;
-    /* Não alterar */
-    max-width: 100%;
-    min-height: 2.2rem;
-    vertical-align: middle;
-    margin-top: 1.5rem;
-    font-weight: 500;
-    text-decoration: none;
-    display: block;
-    border-radius: 50px;
-    padding-top: 0.3rem;
-}
-
-.botao:hover {
-    /* Cor do texto e fundo - Quando tem link */
-    color: #ffffff;
-    background-color: #e7323f;
-}
-
-/* SOCIAL */
-.social {
-    margin-bottom: 40px;
-}
-.social a {
-    text-decoration: none;
-    /* Mudar cor da fonte do ícone */
-    color: #ffffff;
-}
-
-.social a:hover {
-    /* Cor do ícone - Quando tem link */
-    text-decoration: none;
-    color: #e7323f;
-}
-
-.social ul li {
-    display: inline;
-    list-style-type: none;
+    background-color: #0d1117;
+    /* Deep terminal background */
+    font-family: 'Fira Code', monospace;
+    color: #c9d1d9;
+    /* Soft white text */
     margin: 0;
-    padding: 5px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow-x: hidden;
 }
 
-/* FOOTER */
-footer {
-    font-size: 0.8rem;
-    line-height: 1rem;
-}
-
-footer a {
+a {
     text-decoration: none;
-    color: #ffffff;
+    color: inherit;
+    transition: color 0.3s ease;
 }
 
-footer a:hover {
-    color: #e7323f;
+a:hover {
+    color: #58a6ff;
+    /* Link hover color */
+}
+
+/* Terminal Window */
+.terminal {
+    width: 90%;
+    max-width: 800px;
+    background-color: #161b22;
+    /* Slightly lighter background for the window */
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border: 1px solid #30363d;
+    overflow: hidden;
+    margin: 20px;
+}
+
+/* Terminal Header */
+.terminal-header {
+    background-color: #21262d;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #30363d;
+    position: relative;
+}
+
+.terminal-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.terminal-buttons span {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.close {
+    background-color: #ff5f56;
+}
+
+.minimize {
+    background-color: #ffbd2e;
+}
+
+.maximize {
+    background-color: #27c93f;
+}
+
+.terminal-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.9rem;
+    color: #8b949e;
+}
+
+/* Terminal Body */
+.terminal-body {
+    padding: 20px;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+/* Command Line */
+.command-line {
+    margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.prompt {
+    color: #7ee787;
+    /* Terminal green */
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.command {
+    color: #a5d6ff;
+    /* Command blue */
+}
+
+.output {
+    margin-bottom: 25px;
+    padding-left: 0;
+    color: #c9d1d9;
+}
+
+/* Profile Section */
+.profile-section {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.profile-pic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 2px solid #30363d;
+}
+
+.profile-info h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: #f0f6fc;
+}
+
+.profile-info p {
+    margin: 5px 0 0;
+    color: #8b949e;
+}
+
+/* Links List */
+.links-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.link-item {
+    display: flex;
+    gap: 15px;
+    font-size: 0.95rem;
+    flex-wrap: wrap;
+}
+
+.permissions {
+    color: #d2a8ff;
+}
+
+/* Purple */
+.user {
+    color: #ffa657;
+}
+
+/* Orange */
+.group {
+    color: #ffa657;
+}
+
+/* Orange */
+
+.link-item a {
+    color: #58a6ff;
+    text-decoration: underline;
+}
+
+.link-item a:hover {
+    color: #79c0ff;
+    text-decoration: none;
+}
+
+/* Social Icons */
+.social-icons {
+    display: flex;
+    gap: 20px;
+    font-size: 1.5rem;
+    align-items: center;
+    /* Fix vertical alignment */
+    flex-wrap: wrap;
+    /* Ensure they wrap on small screens if needed */
+}
+
+.social-icons a {
+    color: #8b949e;
+}
+
+.social-icons a:hover {
+    color: #58a6ff;
+    transform: translateY(-2px);
+}
+
+/* Cursor Animation */
+.cursor {
+    display: inline-block;
+    width: 10px;
+    height: 1.2em;
+    background-color: #c9d1d9;
+    animation: blink 1s step-end infinite;
+    vertical-align: middle;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+    .terminal-title {
+        display: none;
+        /* Hide title on small screens to save space */
+    }
+
+    .profile-section {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .link-item {
+        font-size: 0.85rem;
+        gap: 8px;
+    }
+
+    .permissions,
+    .user,
+    .group {
+        display: none;
+        /* Hide details on very small screens if needed, or keep them */
+    }
+
+    /* Let's keep them but make them smaller or stack if needed. 
+       Actually, hiding permissions/user/group on mobile might be cleaner 
+       if it wraps too much, but let's try to keep the aesthetic. */
+    .permissions,
+    .user,
+    .group {
+        display: inline-block;
+        font-size: 0.8rem;
+    }
 }
