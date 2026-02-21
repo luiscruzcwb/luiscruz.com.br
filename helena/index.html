@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Confirmação de Presença - Festa da Helena ❄️</title>
     <meta name="description" content="Confirmação de presença para a festa de 4 anos da Helena - Tema Frozen">
-    <meta property="og:title" content="Festa da Helena - 4 aninhos! ❄️">
+    <meta property="og:title" content="Festa da Helena - 4 Anos! ❄️">
     <meta property="og:description" content="Confirme sua presença na festa da Helena! Tema Frozen - 26/03/2026 às 19h">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>❄️</text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -27,11 +27,7 @@
             --success-green: #27ae60;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Quicksand', sans-serif;
@@ -44,21 +40,14 @@
             position: relative;
         }
 
-        /* Snowflake animations */
+        /* Snowflakes */
         .snowflakes {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0; overflow: hidden;
         }
 
         .snowflake {
-            position: absolute;
-            top: -20px;
+            position: absolute; top: -20px;
             color: rgba(255, 255, 255, 0.7);
             font-size: 1rem;
             animation: snowfall linear infinite;
@@ -73,19 +62,14 @@
             100% { transform: translateY(105vh) rotate(360deg) translateX(-5px); opacity: 0.3; }
         }
 
-        /* Aurora effect */
+        /* Aurora */
         .aurora {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 40%;
+            position: fixed; top: 0; left: 0; width: 100%; height: 40%;
             background:
                 radial-gradient(ellipse at 20% 20%, rgba(139, 95, 191, 0.15) 0%, transparent 60%),
                 radial-gradient(ellipse at 80% 10%, rgba(126, 200, 227, 0.12) 0%, transparent 50%),
                 radial-gradient(ellipse at 50% 30%, rgba(160, 210, 240, 0.1) 0%, transparent 55%);
-            pointer-events: none;
-            z-index: 0;
+            pointer-events: none; z-index: 0;
             animation: auroraShift 12s ease-in-out infinite alternate;
         }
 
@@ -95,38 +79,25 @@
             100% { opacity: 0.7; transform: scale(0.98); }
         }
 
-        /* Main container */
         .container {
-            position: relative;
-            z-index: 1;
-            width: 100%;
-            max-width: 580px;
+            position: relative; z-index: 1;
+            width: 100%; max-width: 580px;
             padding: 20px 16px 40px;
         }
 
         /* Banner */
         .banner {
             background: linear-gradient(135deg, rgba(26, 58, 92, 0.9) 0%, rgba(45, 106, 159, 0.85) 50%, rgba(139, 95, 191, 0.7) 100%);
-            border-radius: 20px;
-            padding: 40px 30px 35px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
+            border-radius: 20px; padding: 40px 30px 35px;
+            text-align: center; position: relative; overflow: hidden;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow:
-                0 20px 60px rgba(0, 0, 0, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
             margin-bottom: 24px;
         }
 
         .banner::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
             background: radial-gradient(circle at 30% 40%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
             animation: shimmer 8s ease-in-out infinite;
         }
@@ -137,10 +108,7 @@
         }
 
         .banner-snowflake-deco {
-            position: absolute;
-            color: rgba(255, 255, 255, 0.08);
-            font-size: 80px;
-            z-index: 0;
+            position: absolute; color: rgba(255, 255, 255, 0.08); font-size: 80px; z-index: 0;
         }
         .banner-snowflake-deco:nth-child(1) { top: -10px; right: -10px; transform: rotate(15deg); }
         .banner-snowflake-deco:nth-child(2) { bottom: -15px; left: -5px; font-size: 60px; transform: rotate(-20deg); }
@@ -150,132 +118,85 @@
             display: inline-block;
             background: rgba(255, 255, 255, 0.12);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            padding: 6px 18px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--ice-pale);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 18px;
-            position: relative;
-            z-index: 1;
+            border-radius: 20px; padding: 6px 18px;
+            font-size: 0.75rem; font-weight: 600; color: var(--ice-pale);
+            letter-spacing: 2px; text-transform: uppercase;
+            margin-bottom: 18px; position: relative; z-index: 1;
         }
 
         .banner h1 {
             font-family: 'Cinzel Decorative', serif;
-            font-size: 2.2rem;
-            font-weight: 900;
-            color: var(--snow-white);
+            font-size: 2.2rem; font-weight: 900; color: var(--snow-white);
             text-shadow: 0 2px 20px rgba(126, 200, 227, 0.5), 0 0 40px rgba(139, 95, 191, 0.3);
-            line-height: 1.2;
-            margin-bottom: 6px;
-            position: relative;
-            z-index: 1;
+            line-height: 1.2; margin-bottom: 6px; position: relative; z-index: 1;
         }
 
         .banner .age {
             font-family: 'Cinzel Decorative', serif;
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--warm-gold);
+            font-size: 1.3rem; font-weight: 700; color: var(--warm-gold);
             text-shadow: 0 1px 10px rgba(212, 168, 67, 0.4);
-            margin-bottom: 20px;
-            position: relative;
-            z-index: 1;
+            margin-bottom: 20px; position: relative; z-index: 1;
         }
 
         .banner .invite-text {
-            font-size: 1rem;
-            font-weight: 500;
+            font-size: 1rem; font-weight: 500;
             color: rgba(255, 255, 255, 0.85);
-            margin-bottom: 24px;
-            position: relative;
-            z-index: 1;
+            margin-bottom: 24px; position: relative; z-index: 1;
         }
 
-        .event-details {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            position: relative;
-            z-index: 1;
-        }
+        .event-details { display: flex; flex-direction: column; gap: 10px; position: relative; z-index: 1; }
 
         .event-detail-row {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            padding: 10px 16px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            background: rgba(255, 255, 255, 0.08); border-radius: 12px;
+            padding: 10px 16px; border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .event-detail-row .icon { font-size: 1.1rem; flex-shrink: 0; }
         .event-detail-row .detail-text { font-size: 0.85rem; font-weight: 600; color: var(--snow-white); }
         .event-detail-row .detail-sub { font-size: 0.75rem; font-weight: 400; color: rgba(255, 255, 255, 0.65); }
 
-        .deadline-notice {
-            margin-top: 16px;
-            padding: 8px 14px;
-            background: rgba(212, 168, 67, 0.15);
-            border: 1px solid rgba(212, 168, 67, 0.3);
-            border-radius: 10px;
-            font-size: 0.78rem;
-            font-weight: 600;
-            color: var(--warm-gold);
-            position: relative;
-            z-index: 1;
+        .parking-notice {
+            font-size: 0.72rem; font-weight: 500;
+            color: rgba(255, 255, 255, 0.5);
+            font-style: italic; margin-top: 3px;
         }
 
-        /* Form card */
+        .deadline-notice {
+            margin-top: 16px; padding: 8px 14px;
+            background: rgba(212, 168, 67, 0.15);
+            border: 1px solid rgba(212, 168, 67, 0.3);
+            border-radius: 10px; font-size: 0.78rem; font-weight: 600;
+            color: var(--warm-gold); position: relative; z-index: 1;
+        }
+
+        /* Form cards */
         .form-card {
             background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 18px;
-            padding: 30px 28px;
-            margin-bottom: 20px;
+            backdrop-filter: blur(20px); border-radius: 18px;
+            padding: 30px 28px; margin-bottom: 20px;
             border: 1px solid rgba(255, 255, 255, 0.5);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
             animation: fadeInUp 0.6s ease-out both;
         }
-
-        .form-card:nth-child(3) { animation-delay: 0.1s; }
-        .form-card:nth-child(4) { animation-delay: 0.2s; }
-        .form-card:nth-child(5) { animation-delay: 0.3s; }
-        .form-card:nth-child(6) { animation-delay: 0.4s; }
-        .form-card:nth-child(7) { animation-delay: 0.5s; }
 
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .form-card .required-notice {
-            font-size: 0.78rem;
-            color: var(--error-red);
-            margin-bottom: 0;
-        }
+        .form-card .required-notice { font-size: 0.78rem; color: var(--error-red); margin-bottom: 0; }
 
         .question-label {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 16px;
-            line-height: 1.4;
+            font-size: 0.95rem; font-weight: 700; color: var(--text-dark);
+            margin-bottom: 16px; line-height: 1.4;
         }
 
         .question-label .required { color: var(--error-red); margin-left: 3px; }
 
-        /* Validation error */
         .field-error {
-            font-size: 0.78rem;
-            color: var(--error-red);
-            margin-top: 8px;
-            display: none;
-            font-weight: 600;
+            font-size: 0.78rem; color: var(--error-red);
+            margin-top: 8px; display: none; font-weight: 600;
         }
 
         .field-error.visible { display: block; }
@@ -285,25 +206,16 @@
             box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.15), 0 8px 32px rgba(0, 0, 0, 0.12);
         }
 
-        /* Radio options */
+        /* Radio */
         .radio-group { display: flex; flex-direction: column; gap: 0; }
 
         .radio-option {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 14px 16px;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            border: 2px solid transparent;
-            user-select: none;
+            display: flex; align-items: center; gap: 14px;
+            padding: 14px 16px; border-radius: 12px; cursor: pointer;
+            transition: all 0.25s ease; border: 2px solid transparent; user-select: none;
         }
 
-        .radio-option:hover {
-            background: var(--ice-glow);
-            border-color: var(--ice-light);
-        }
+        .radio-option:hover { background: var(--ice-glow); border-color: var(--ice-light); }
 
         .radio-option.selected {
             background: linear-gradient(135deg, rgba(126, 200, 227, 0.12) 0%, rgba(160, 210, 240, 0.08) 100%);
@@ -311,25 +223,17 @@
         }
 
         .radio-circle {
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            border: 2px solid #b0bec5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            transition: all 0.25s ease;
+            width: 22px; height: 22px; border-radius: 50%;
+            border: 2px solid #b0bec5; display: flex;
+            align-items: center; justify-content: center;
+            flex-shrink: 0; transition: all 0.25s ease;
         }
 
         .radio-option.selected .radio-circle { border-color: var(--ice-mid); }
 
         .radio-circle-inner {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: var(--ice-mid);
-            transform: scale(0);
+            width: 12px; height: 12px; border-radius: 50%;
+            background: var(--ice-mid); transform: scale(0);
             transition: transform 0.2s ease;
         }
 
@@ -338,142 +242,140 @@
         .radio-label { font-size: 0.9rem; font-weight: 500; color: var(--text-dark); }
 
         /* Conditional fields */
-        .conditional-fields {
-            display: none;
-        }
-
-        .conditional-fields.visible {
-            display: block;
-        }
+        .conditional-fields { display: none; }
+        .conditional-fields.visible { display: block; }
 
         /* Text inputs */
         .text-input {
-            width: 100%;
-            border: none;
-            border-bottom: 2px solid #dde4ea;
-            padding: 12px 4px;
-            font-family: 'Quicksand', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--text-dark);
-            background: transparent;
-            transition: border-color 0.3s ease;
-            outline: none;
+            width: 100%; border: none; border-bottom: 2px solid #dde4ea;
+            padding: 12px 4px; font-family: 'Quicksand', sans-serif;
+            font-size: 0.9rem; font-weight: 500; color: var(--text-dark);
+            background: transparent; transition: border-color 0.3s ease; outline: none;
         }
 
         .text-input:focus { border-bottom-color: var(--ice-mid); }
         .text-input::placeholder { color: #a0aec0; font-weight: 400; }
 
-        /* Number inputs */
-        .number-row { display: flex; gap: 20px; }
-        .number-field { flex: 1; }
+        /* Guest list */
+        .guest-section { margin-bottom: 20px; }
 
-        .number-field label {
-            display: block;
-            font-size: 0.78rem;
-            font-weight: 600;
-            color: var(--text-mid);
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        .guest-section-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 12px;
         }
 
-        .number-input-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: var(--ice-glow);
-            border-radius: 12px;
-            padding: 8px 12px;
-            border: 2px solid rgba(126, 200, 227, 0.2);
+        .guest-section-title {
+            font-size: 0.82rem; font-weight: 700; color: var(--text-mid);
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+
+        .add-guest-btn {
+            display: flex; align-items: center; gap: 6px;
+            background: linear-gradient(135deg, var(--ice-mid), var(--crystal-purple));
+            color: white; border: none; padding: 6px 14px;
+            border-radius: 8px; font-family: 'Quicksand', sans-serif;
+            font-size: 0.78rem; font-weight: 700; cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .add-guest-btn:hover { transform: translateY(-1px); box-shadow: 0 3px 12px rgba(45, 106, 159, 0.3); }
+        .add-guest-btn:active { transform: translateY(0); }
+
+        .guest-list { display: flex; flex-direction: column; gap: 10px; }
+
+        .guest-row {
+            display: flex; align-items: center; gap: 10px;
+            background: var(--ice-glow); border-radius: 12px;
+            padding: 10px 14px; border: 1px solid rgba(126, 200, 227, 0.2);
+            animation: fadeInUp 0.3s ease-out;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .guest-row .guest-number {
+            font-size: 0.75rem; font-weight: 700; color: var(--ice-mid);
+            background: rgba(45, 106, 159, 0.1); border-radius: 50%;
+            width: 26px; height: 26px; display: flex;
+            align-items: center; justify-content: center; flex-shrink: 0;
+        }
+
+        .guest-row .guest-fields {
+            flex: 1; display: flex; gap: 10px; align-items: center;
+        }
+
+        .guest-row .guest-name-input {
+            flex: 1; border: none; border-bottom: 2px solid rgba(45, 106, 159, 0.2);
+            padding: 8px 4px; font-family: 'Quicksand', sans-serif;
+            font-size: 0.85rem; font-weight: 500; color: var(--text-dark);
+            background: transparent; outline: none;
             transition: border-color 0.3s ease;
         }
 
-        .number-input-wrapper:focus-within { border-color: var(--ice-mid); }
-        .number-input-wrapper .icon { font-size: 1.2rem; }
+        .guest-row .guest-name-input:focus { border-bottom-color: var(--ice-mid); }
+        .guest-row .guest-name-input::placeholder { color: #a0aec0; font-weight: 400; }
 
-        .number-input {
-            width: 100%;
-            border: none;
-            background: transparent;
-            font-family: 'Quicksand', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--text-dark);
-            outline: none;
-            text-align: center;
+        .guest-row .guest-age-input {
+            width: 70px; border: none; border-bottom: 2px solid rgba(45, 106, 159, 0.2);
+            padding: 8px 4px; font-family: 'Quicksand', sans-serif;
+            font-size: 0.85rem; font-weight: 500; color: var(--text-dark);
+            background: transparent; outline: none; text-align: center;
+            transition: border-color 0.3s ease;
         }
 
-        .number-input::-webkit-inner-spin-button,
-        .number-input::-webkit-outer-spin-button { opacity: 1; height: 28px; }
+        .guest-row .guest-age-input:focus { border-bottom-color: var(--ice-mid); }
+        .guest-row .guest-age-input::placeholder { color: #a0aec0; font-weight: 400; }
+
+        .guest-row .guest-age-input.input-error { border-bottom-color: var(--error-red); }
+
+        .remove-guest-btn {
+            background: none; border: none; color: #c0392b;
+            font-size: 1.2rem; cursor: pointer; padding: 4px 6px;
+            border-radius: 6px; transition: all 0.2s ease;
+            line-height: 1; flex-shrink: 0; opacity: 0.5;
+        }
+
+        .remove-guest-btn:hover { opacity: 1; background: rgba(192, 57, 43, 0.08); }
+
+        .guest-section-hint {
+            font-size: 0.72rem; color: var(--text-mid);
+            margin-top: 8px; font-style: italic;
+        }
 
         /* Textarea */
         .textarea-input {
-            width: 100%;
-            border: 2px solid #dde4ea;
-            border-radius: 12px;
-            padding: 14px 16px;
-            font-family: 'Quicksand', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--text-dark);
-            background: var(--frost-white);
-            transition: border-color 0.3s ease;
-            outline: none;
-            resize: vertical;
-            min-height: 80px;
+            width: 100%; border: 2px solid #dde4ea; border-radius: 12px;
+            padding: 14px 16px; font-family: 'Quicksand', sans-serif;
+            font-size: 0.9rem; font-weight: 500; color: var(--text-dark);
+            background: var(--frost-white); transition: border-color 0.3s ease;
+            outline: none; resize: vertical; min-height: 80px;
         }
 
         .textarea-input:focus { border-color: var(--ice-mid); }
         .textarea-input::placeholder { color: #a0aec0; font-weight: 400; }
 
-        /* Submit section */
+        /* Submit */
         .submit-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            display: flex; justify-content: space-between; align-items: center;
             animation: fadeInUp 0.6s ease-out 0.6s both;
         }
 
         .submit-btn {
             background: linear-gradient(135deg, var(--ice-mid) 0%, var(--crystal-purple) 100%);
-            color: white;
-            border: none;
-            padding: 14px 40px;
-            border-radius: 12px;
-            font-family: 'Quicksand', sans-serif;
-            font-size: 0.95rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(45, 106, 159, 0.35);
-            letter-spacing: 0.5px;
-            position: relative;
+            color: white; border: none; padding: 14px 40px; border-radius: 12px;
+            font-family: 'Quicksand', sans-serif; font-size: 0.95rem; font-weight: 700;
+            cursor: pointer; transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(45, 106, 159, 0.35); letter-spacing: 0.5px;
         }
 
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 28px rgba(45, 106, 159, 0.45);
-        }
-
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 28px rgba(45, 106, 159, 0.45); }
         .submit-btn:active { transform: translateY(0); }
-
-        .submit-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
+        .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
         .submit-btn .spinner {
-            display: none;
-            width: 18px;
-            height: 18px;
+            display: none; width: 18px; height: 18px;
             border: 2px solid rgba(255,255,255,0.3);
-            border-top-color: white;
-            border-radius: 50%;
+            border-top-color: white; border-radius: 50%;
             animation: spin 0.6s linear infinite;
-            margin-right: 8px;
-            vertical-align: middle;
+            margin-right: 8px; vertical-align: middle;
         }
 
         .submit-btn.loading .spinner { display: inline-block; }
@@ -482,50 +384,29 @@
         @keyframes spin { to { transform: rotate(360deg); } }
 
         .clear-link {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--ice-pale);
-            text-decoration: none;
-            cursor: pointer;
-            transition: color 0.2s ease;
-            background: none;
-            border: none;
-            font-family: 'Quicksand', sans-serif;
+            font-size: 0.85rem; font-weight: 600; color: var(--ice-pale);
+            text-decoration: none; cursor: pointer; transition: color 0.2s ease;
+            background: none; border: none; font-family: 'Quicksand', sans-serif;
         }
 
         .clear-link:hover { color: var(--snow-white); }
 
-        /* Footer */
         .footer {
-            text-align: center;
-            padding: 20px;
-            font-size: 0.72rem;
-            color: rgba(255, 255, 255, 0.4);
+            text-align: center; padding: 20px;
+            font-size: 0.72rem; color: rgba(255, 255, 255, 0.4);
             animation: fadeInUp 0.6s ease-out 0.7s both;
         }
 
         /* Overlays */
         .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(11, 26, 46, 0.92);
-            backdrop-filter: blur(10px);
-            z-index: 100;
-            justify-content: center;
-            align-items: center;
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(11, 26, 46, 0.92); backdrop-filter: blur(10px);
+            z-index: 100; justify-content: center; align-items: center;
         }
 
         .overlay.active { display: flex; }
 
-        .overlay-content {
-            text-align: center;
-            padding: 40px;
-            animation: successPop 0.5s ease-out;
-        }
+        .overlay-content { text-align: center; padding: 40px; animation: successPop 0.5s ease-out; }
 
         @keyframes successPop {
             0% { opacity: 0; transform: scale(0.8); }
@@ -537,17 +418,12 @@
 
         .overlay-content h2 {
             font-family: 'Cinzel Decorative', serif;
-            font-size: 1.8rem;
-            color: var(--snow-white);
-            margin-bottom: 12px;
-            text-shadow: 0 2px 15px rgba(126, 200, 227, 0.4);
+            font-size: 1.8rem; color: var(--snow-white);
+            margin-bottom: 12px; text-shadow: 0 2px 15px rgba(126, 200, 227, 0.4);
         }
 
         .overlay-content p {
-            font-size: 1rem;
-            color: var(--ice-pale);
-            font-weight: 500;
-            line-height: 1.6;
+            font-size: 1rem; color: var(--ice-pale); font-weight: 500; line-height: 1.6;
         }
 
         .overlay-content .error-text { color: #e74c3c; }
@@ -556,25 +432,20 @@
             margin-top: 24px;
             background: rgba(255, 255, 255, 0.12);
             border: 1px solid rgba(255, 255, 255, 0.25);
-            color: white;
-            padding: 10px 28px;
-            border-radius: 10px;
-            font-family: 'Quicksand', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
+            color: white; padding: 10px 28px; border-radius: 10px;
+            font-family: 'Quicksand', sans-serif; font-size: 0.85rem; font-weight: 600;
+            cursor: pointer; transition: all 0.2s ease;
         }
 
         .overlay-close-btn:hover { background: rgba(255, 255, 255, 0.2); }
 
-        /* Responsive */
         @media (max-width: 480px) {
             .container { padding: 16px 12px 30px; }
             .banner { padding: 30px 20px 28px; }
             .banner h1 { font-size: 1.7rem; }
             .form-card { padding: 24px 20px; }
-            .number-row { flex-direction: column; gap: 14px; }
+            .guest-row .guest-fields { flex-direction: column; gap: 6px; }
+            .guest-row .guest-age-input { width: 100%; text-align: left; }
         }
     </style>
 </head>
@@ -583,7 +454,7 @@
     <div class="aurora"></div>
     <div class="snowflakes" id="snowflakes"></div>
 
-    <!-- Success overlay -->
+    <!-- Overlays -->
     <div class="overlay" id="successOverlay">
         <div class="overlay-content">
             <div class="overlay-icon">❄️ ✨</div>
@@ -592,7 +463,6 @@
         </div>
     </div>
 
-    <!-- Decline overlay -->
     <div class="overlay" id="declineOverlay">
         <div class="overlay-content">
             <div class="overlay-icon">⛄</div>
@@ -601,7 +471,6 @@
         </div>
     </div>
 
-    <!-- Error overlay -->
     <div class="overlay" id="errorOverlay">
         <div class="overlay-content">
             <div class="overlay-icon">⚠️</div>
@@ -621,7 +490,7 @@
 
             <div class="banner-tag">❄ Tema Frozen ❄</div>
             <h1>Helena</h1>
-            <div class="age">faz 4 aninhos!</div>
+            <div class="age">faz 4 Anos</div>
             <p class="invite-text">Venha comemorar comigo! ⛄❄️</p>
 
             <div class="event-details">
@@ -636,6 +505,7 @@
                     <div>
                         <span class="detail-text">Buffet Arca de Noé - Clube Mercês</span><br>
                         <span class="detail-sub">R. Valério Haisi, 262 - Santa Felicidade, Curitiba/PR</span>
+                        <div class="parking-notice">🅿️ Estacionamento no local é pago</div>
                     </div>
                 </div>
             </div>
@@ -658,11 +528,11 @@
                     Você pode participar? <span class="required">*</span>
                 </div>
                 <div class="radio-group">
-                    <div class="radio-option" onclick="selectAttendance('Participarei', this)" data-value="Participarei">
+                    <div class="radio-option" onclick="selectAttendance('Participarei', this)">
                         <div class="radio-circle"><div class="radio-circle-inner"></div></div>
                         <span class="radio-label">Participarei ❄️</span>
                     </div>
-                    <div class="radio-option" onclick="selectAttendance('Não participarei', this)" data-value="Não participarei">
+                    <div class="radio-option" onclick="selectAttendance('Não participarei', this)">
                         <div class="radio-circle"><div class="radio-circle-inner"></div></div>
                         <span class="radio-label">Não participarei</span>
                     </div>
@@ -670,43 +540,49 @@
                 <div class="field-error" id="error-attendance">Por favor, selecione uma opção.</div>
             </div>
 
-            <!-- Conditional fields: shown only when "Participarei" is selected -->
-            <div class="conditional-fields" id="conditionalFields">
-
-                <!-- Q2: Names -->
-                <div class="form-card" id="card-names">
+            <!-- Decline: ask name -->
+            <div class="conditional-fields" id="declineFields">
+                <div class="form-card" id="card-decline-name">
                     <div class="question-label">
-                        Quais são os nomes das pessoas que participarão? <span class="required">*</span>
+                        Seu nome <span class="required">*</span>
                     </div>
-                    <input type="text" class="text-input" id="inputNomes" placeholder="Sua resposta">
-                    <div class="field-error" id="error-names">Por favor, informe os nomes.</div>
+                    <input type="text" class="text-input" id="inputDeclineName" placeholder="Sua resposta">
+                    <div class="field-error" id="error-decline-name">Por favor, informe seu nome.</div>
+                </div>
+            </div>
+
+            <!-- Attend: guest list + dietary -->
+            <div class="conditional-fields" id="attendFields">
+
+                <!-- Guest list -->
+                <div class="form-card" id="card-guests">
+                    <div class="question-label">
+                        Convidados <span class="required">*</span>
+                    </div>
+
+                    <!-- Adults -->
+                    <div class="guest-section">
+                        <div class="guest-section-header">
+                            <span class="guest-section-title">🧑 Adultos</span>
+                            <button type="button" class="add-guest-btn" onclick="addGuest('adults')">+ Adicionar</button>
+                        </div>
+                        <div class="guest-list" id="adultsList"></div>
+                    </div>
+
+                    <!-- Children -->
+                    <div class="guest-section" style="margin-bottom: 0;">
+                        <div class="guest-section-header">
+                            <span class="guest-section-title">👧 Crianças</span>
+                            <button type="button" class="add-guest-btn" onclick="addGuest('children')">+ Adicionar</button>
+                        </div>
+                        <div class="guest-list" id="childrenList"></div>
+                        <p class="guest-section-hint">A idade da criança é obrigatória.</p>
+                    </div>
+
+                    <div class="field-error" id="error-guests">Adicione ao menos 1 convidado com nome preenchido.</div>
                 </div>
 
-                <!-- Q3: Number of guests -->
-                <div class="form-card" id="card-quantity">
-                    <div class="question-label">
-                        Quantidade de convidados <span class="required">*</span>
-                    </div>
-                    <div class="number-row">
-                        <div class="number-field">
-                            <label>Adultos</label>
-                            <div class="number-input-wrapper">
-                                <span class="icon">🧑</span>
-                                <input type="number" class="number-input" id="inputAdultos" min="0" max="20" value="1">
-                            </div>
-                        </div>
-                        <div class="number-field">
-                            <label>Crianças</label>
-                            <div class="number-input-wrapper">
-                                <span class="icon">👧</span>
-                                <input type="number" class="number-input" id="inputCriancas" min="0" max="20" value="0">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="field-error" id="error-quantity">Informe ao menos 1 convidado.</div>
-                </div>
-
-                <!-- Q4: Dietary restrictions -->
+                <!-- Dietary restrictions -->
                 <div class="form-card">
                     <div class="question-label">
                         Alguma restrição alimentar?
@@ -737,12 +613,14 @@
         // =====================================================
         // CONFIGURAÇÃO: Cole aqui a URL do seu Google Apps Script
         // =====================================================
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzOSJhELzrqmEu1Kzwb_fItIdx3lK2vTTb4oAeDGFtrLB7OTnrcjvgBZkywwuJvEas/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwAk23jdsv0nadbEZa8tqccuOAsZOIGdKlW6WuxdLYguuWqao8C1nMyufGz4SSPPC9c/exec';
         // =====================================================
 
         let selectedAttendance = null;
+        let adultCounter = 0;
+        let childCounter = 0;
 
-        // Snowflake generation
+        // Snowflakes
         function createSnowflakes() {
             const container = document.getElementById('snowflakes');
             const flakes = ['❄', '❅', '❆', '✦', '✧', '•'];
@@ -766,23 +644,94 @@
             parent.querySelectorAll('.radio-option').forEach(opt => opt.classList.remove('selected'));
             el.classList.add('selected');
             selectedAttendance = value;
-
-            // Clear error
             clearError('card-attendance', 'error-attendance');
 
-            // Show/hide conditional fields
-            const conditional = document.getElementById('conditionalFields');
+            const attendFields = document.getElementById('attendFields');
+            const declineFields = document.getElementById('declineFields');
+
             if (value === 'Participarei') {
-                conditional.classList.add('visible');
+                attendFields.classList.add('visible');
+                declineFields.classList.remove('visible');
+                if (document.getElementById('adultsList').children.length === 0) {
+                    addGuest('adults');
+                }
             } else {
-                conditional.classList.remove('visible');
+                attendFields.classList.remove('visible');
+                declineFields.classList.add('visible');
+                document.getElementById('inputDeclineName').focus();
             }
         }
 
+        // Guest management
+        function addGuest(type) {
+            const isChild = type === 'children';
+            const list = document.getElementById(isChild ? 'childrenList' : 'adultsList');
+            const counter = isChild ? ++childCounter : ++adultCounter;
+            const id = `${type}-${counter}`;
+            const num = list.children.length + 1;
+
+            const row = document.createElement('div');
+            row.className = 'guest-row';
+            row.id = id;
+
+            row.innerHTML = `
+                <span class="guest-number">${num}</span>
+                <div class="guest-fields">
+                    <input type="text" class="guest-name-input" placeholder="Nome" data-type="${type}">
+                    ${isChild ? '<input type="number" class="guest-age-input" placeholder="Idade" min="0" max="17" data-type="child-age">' : ''}
+                </div>
+                <button type="button" class="remove-guest-btn" onclick="removeGuest('${id}', '${type}')" title="Remover">✕</button>
+            `;
+
+            list.appendChild(row);
+            row.querySelector('.guest-name-input').focus();
+        }
+
+        function removeGuest(id, type) {
+            const list = document.getElementById(type === 'children' ? 'childrenList' : 'adultsList');
+            const el = document.getElementById(id);
+            if (el) {
+                el.style.opacity = '0';
+                el.style.transform = 'translateX(20px)';
+                setTimeout(() => {
+                    el.remove();
+                    renumberGuests(list);
+                }, 200);
+            }
+        }
+
+        function renumberGuests(list) {
+            Array.from(list.children).forEach((row, index) => {
+                row.querySelector('.guest-number').textContent = index + 1;
+            });
+        }
+
+        // Collect guest data
+        function collectGuests() {
+            const adults = [];
+            const children = [];
+
+            document.querySelectorAll('#adultsList .guest-row').forEach(row => {
+                const name = row.querySelector('.guest-name-input').value.trim();
+                if (name) adults.push({ nome: name });
+            });
+
+            document.querySelectorAll('#childrenList .guest-row').forEach(row => {
+                const name = row.querySelector('.guest-name-input').value.trim();
+                const ageInput = row.querySelector('.guest-age-input');
+                const age = ageInput ? ageInput.value : '';
+                if (name) children.push({ nome: name, idade: age });
+            });
+
+            return { adults, children };
+        }
+
         // Validation helpers
-        function showError(cardId, errorId) {
+        function showError(cardId, errorId, msg) {
             document.getElementById(cardId).classList.add('has-error');
-            document.getElementById(errorId).classList.add('visible');
+            const errorEl = document.getElementById(errorId);
+            if (msg) errorEl.textContent = msg;
+            errorEl.classList.add('visible');
         }
 
         function clearError(cardId, errorId) {
@@ -793,90 +742,97 @@
         function clearAllErrors() {
             document.querySelectorAll('.form-card').forEach(c => c.classList.remove('has-error'));
             document.querySelectorAll('.field-error').forEach(e => e.classList.remove('visible'));
+            document.querySelectorAll('.guest-age-input').forEach(i => i.classList.remove('input-error'));
         }
 
-        // Overlay controls
-        function showOverlay(id) {
-            document.getElementById(id).classList.add('active');
-        }
-
-        function closeOverlay(id) {
-            document.getElementById(id).classList.remove('active');
-        }
+        // Overlays
+        function showOverlay(id) { document.getElementById(id).classList.add('active'); }
+        function closeOverlay(id) { document.getElementById(id).classList.remove('active'); }
 
         // Submit
         async function submitForm() {
             clearAllErrors();
             let valid = true;
 
-            // Validate attendance
             if (!selectedAttendance) {
                 showError('card-attendance', 'error-attendance');
                 valid = false;
             }
 
-            // If attending, validate additional fields
+            let payload = {};
+
+            if (selectedAttendance === 'Não participarei') {
+                const declineName = document.getElementById('inputDeclineName').value.trim();
+                if (!declineName) {
+                    showError('card-decline-name', 'error-decline-name');
+                    valid = false;
+                }
+                payload = {
+                    participacao: 'Não participarei',
+                    nomeRecusa: declineName,
+                    adultos: [],
+                    criancas: [],
+                    restricao: ''
+                };
+            }
+
             if (selectedAttendance === 'Participarei') {
-                const nomes = document.getElementById('inputNomes').value.trim();
-                const adultos = parseInt(document.getElementById('inputAdultos').value) || 0;
-                const criancas = parseInt(document.getElementById('inputCriancas').value) || 0;
+                const { adults, children } = collectGuests();
 
-                if (!nomes) {
-                    showError('card-names', 'error-names');
+                if (adults.length === 0 && children.length === 0) {
+                    showError('card-guests', 'error-guests', 'Adicione ao menos 1 convidado com nome preenchido.');
                     valid = false;
                 }
 
-                if (adultos + criancas < 1) {
-                    showError('card-quantity', 'error-quantity');
+                // Validate child ages
+                let childAgesMissing = false;
+                document.querySelectorAll('#childrenList .guest-row').forEach(row => {
+                    const name = row.querySelector('.guest-name-input').value.trim();
+                    const ageInput = row.querySelector('.guest-age-input');
+                    if (name && ageInput && !ageInput.value) {
+                        ageInput.classList.add('input-error');
+                        childAgesMissing = true;
+                    }
+                });
+
+                if (childAgesMissing) {
+                    showError('card-guests', 'error-guests', 'Informe a idade de todas as crianças.');
                     valid = false;
                 }
+
+                payload = {
+                    participacao: 'Participarei',
+                    nomeRecusa: '',
+                    adultos: adults,
+                    criancas: children,
+                    restricao: document.getElementById('inputRestricao').value.trim()
+                };
             }
 
             if (!valid) {
-                // Scroll to first error
                 const firstError = document.querySelector('.form-card.has-error');
                 if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 return;
             }
 
-            // Build payload
-            const payload = {
-                participacao: selectedAttendance,
-                nomes: selectedAttendance === 'Participarei'
-                    ? document.getElementById('inputNomes').value.trim()
-                    : '',
-                adultos: selectedAttendance === 'Participarei'
-                    ? parseInt(document.getElementById('inputAdultos').value) || 0
-                    : 0,
-                criancas: selectedAttendance === 'Participarei'
-                    ? parseInt(document.getElementById('inputCriancas').value) || 0
-                    : 0,
-                restricao: selectedAttendance === 'Participarei'
-                    ? document.getElementById('inputRestricao').value.trim()
-                    : ''
-            };
-
-            // Disable button and show loading
             const btn = document.getElementById('submitBtn');
             btn.disabled = true;
             btn.classList.add('loading');
 
             try {
-                const response = await fetch(SCRIPT_URL, {
+                await fetch(SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
 
-                // mode: no-cors returns opaque response, so we assume success
                 if (selectedAttendance === 'Participarei') {
                     showOverlay('successOverlay');
                 } else {
                     showOverlay('declineOverlay');
                 }
 
-                // Auto close after 4s
                 setTimeout(() => {
                     closeOverlay('successOverlay');
                     closeOverlay('declineOverlay');
@@ -897,11 +853,14 @@
         function clearForm() {
             selectedAttendance = null;
             document.querySelectorAll('.radio-option').forEach(opt => opt.classList.remove('selected'));
-            document.getElementById('inputNomes').value = '';
-            document.getElementById('inputAdultos').value = '1';
-            document.getElementById('inputCriancas').value = '0';
+            document.getElementById('inputDeclineName').value = '';
+            document.getElementById('adultsList').innerHTML = '';
+            document.getElementById('childrenList').innerHTML = '';
             document.getElementById('inputRestricao').value = '';
-            document.getElementById('conditionalFields').classList.remove('visible');
+            document.getElementById('attendFields').classList.remove('visible');
+            document.getElementById('declineFields').classList.remove('visible');
+            adultCounter = 0;
+            childCounter = 0;
             clearAllErrors();
         }
     </script>
