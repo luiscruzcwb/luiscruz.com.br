@@ -25,6 +25,7 @@
             --text-mid: #3a5a7a;
             --error-red: #c0392b;
             --success-green: #27ae60;
+            --whatsapp-green: #25D366;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -119,7 +120,7 @@
             background: rgba(255, 255, 255, 0.12);
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 20px; padding: 6px 18px;
-            font-size: 0.75rem; font-weight: 600; color: var(--ice-pale);
+            font-size: 0.8rem; font-weight: 600; color: var(--ice-pale);
             letter-spacing: 2px; text-transform: uppercase;
             margin-bottom: 18px; position: relative; z-index: 1;
         }
@@ -139,7 +140,7 @@
         }
 
         .banner .invite-text {
-            font-size: 1rem; font-weight: 500;
+            font-size: 1.05rem; font-weight: 500;
             color: rgba(255, 255, 255, 0.85);
             margin-bottom: 24px; position: relative; z-index: 1;
         }
@@ -149,26 +150,100 @@
         .event-detail-row {
             display: flex; align-items: center; justify-content: center; gap: 10px;
             background: rgba(255, 255, 255, 0.08); border-radius: 12px;
-            padding: 10px 16px; border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 12px 16px; border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        .event-detail-row .icon { font-size: 1.1rem; flex-shrink: 0; }
-        .event-detail-row .detail-text { font-size: 0.85rem; font-weight: 600; color: var(--snow-white); }
-        .event-detail-row .detail-sub { font-size: 0.75rem; font-weight: 400; color: rgba(255, 255, 255, 0.65); }
+        .event-detail-row .icon { font-size: 1.2rem; flex-shrink: 0; }
+
+        .event-detail-row .detail-text {
+            font-size: 0.95rem; font-weight: 700; color: var(--snow-white);
+        }
+
+        .event-detail-row .detail-sub {
+            font-size: 0.8rem; font-weight: 400; color: rgba(255, 255, 255, 0.7);
+        }
+
+        .maps-link {
+            display: inline-flex; align-items: center; gap: 4px;
+            color: var(--ice-pale); font-size: 0.75rem; font-weight: 600;
+            text-decoration: none; margin-top: 5px;
+            padding: 3px 10px; border-radius: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            transition: all 0.2s ease;
+        }
+
+        .maps-link:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: var(--snow-white);
+        }
 
         .parking-notice {
-            font-size: 0.72rem; font-weight: 500;
-            color: rgba(255, 255, 255, 0.5);
-            font-style: italic; margin-top: 3px;
+            font-size: 0.82rem; font-weight: 700;
+            color: rgba(255, 255, 255, 0.85);
+            margin-top: 6px;
         }
 
         .deadline-notice {
-            margin-top: 16px; padding: 8px 14px;
+            margin-top: 16px; padding: 10px 14px;
             background: rgba(212, 168, 67, 0.15);
             border: 1px solid rgba(212, 168, 67, 0.3);
-            border-radius: 10px; font-size: 0.78rem; font-weight: 600;
+            border-radius: 10px; font-size: 0.85rem; font-weight: 700;
             color: var(--warm-gold); position: relative; z-index: 1;
         }
+
+        /* Deadline expired banner */
+        .deadline-expired-card {
+            background: rgba(192, 57, 43, 0.12);
+            border: 2px solid rgba(192, 57, 43, 0.4);
+            border-radius: 18px; padding: 30px 28px;
+            margin-bottom: 20px; text-align: center;
+            animation: fadeInUp 0.6s ease-out both;
+        }
+
+        .deadline-expired-card .expired-icon { font-size: 2.5rem; margin-bottom: 12px; }
+
+        .deadline-expired-card h3 {
+            font-size: 1.1rem; font-weight: 700; color: var(--snow-white);
+            margin-bottom: 8px;
+        }
+
+        .deadline-expired-card p {
+            font-size: 0.9rem; color: rgba(255, 255, 255, 0.7);
+            line-height: 1.5;
+        }
+
+        /* Already submitted banner */
+        .already-submitted-card {
+            background: rgba(39, 174, 96, 0.12);
+            border: 2px solid rgba(39, 174, 96, 0.4);
+            border-radius: 18px; padding: 30px 28px;
+            margin-bottom: 20px; text-align: center;
+            animation: fadeInUp 0.6s ease-out both;
+        }
+
+        .already-submitted-card .submitted-icon { font-size: 2.5rem; margin-bottom: 12px; }
+
+        .already-submitted-card h3 {
+            font-size: 1.1rem; font-weight: 700; color: var(--snow-white);
+            margin-bottom: 8px;
+        }
+
+        .already-submitted-card p {
+            font-size: 0.9rem; color: rgba(255, 255, 255, 0.7);
+            line-height: 1.5;
+        }
+
+        .already-submitted-card .resubmit-btn {
+            display: inline-block; margin-top: 14px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--snow-white); padding: 8px 20px; border-radius: 8px;
+            font-family: 'Quicksand', sans-serif; font-size: 0.82rem; font-weight: 600;
+            cursor: pointer; transition: all 0.2s ease;
+        }
+
+        .already-submitted-card .resubmit-btn:hover { background: rgba(255, 255, 255, 0.18); }
 
         /* Form cards */
         .form-card {
@@ -313,18 +388,22 @@
         .guest-row .guest-name-input:focus { border-bottom-color: var(--ice-mid); }
         .guest-row .guest-name-input::placeholder { color: #a0aec0; font-weight: 400; }
 
-        .guest-row .guest-age-input {
-            width: 70px; border: none; border-bottom: 2px solid rgba(45, 106, 159, 0.2);
+        .guest-row .guest-age-select {
+            width: 90px; border: none; border-bottom: 2px solid rgba(45, 106, 159, 0.2);
             padding: 8px 4px; font-family: 'Quicksand', sans-serif;
             font-size: 0.85rem; font-weight: 500; color: var(--text-dark);
-            background: transparent; outline: none; text-align: center;
+            background: transparent; outline: none; cursor: pointer;
             transition: border-color 0.3s ease;
+            -webkit-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%233a5a7a' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 4px center;
+            padding-right: 20px;
         }
 
-        .guest-row .guest-age-input:focus { border-bottom-color: var(--ice-mid); }
-        .guest-row .guest-age-input::placeholder { color: #a0aec0; font-weight: 400; }
-
-        .guest-row .guest-age-input.input-error { border-bottom-color: var(--error-red); }
+        .guest-row .guest-age-select:focus { border-bottom-color: var(--ice-mid); }
+        .guest-row .guest-age-select.input-error { border-bottom-color: var(--error-red); }
 
         .remove-guest-btn {
             background: none; border: none; color: #c0392b;
@@ -391,10 +470,58 @@
 
         .clear-link:hover { color: var(--snow-white); }
 
+        /* Share section */
+        .share-section {
+            display: flex; flex-direction: column; align-items: center; gap: 12px;
+            padding: 20px 0 10px;
+            animation: fadeInUp 0.6s ease-out 0.7s both;
+        }
+
+        .share-section-label {
+            font-size: 0.78rem; font-weight: 600;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .share-buttons {
+            display: flex; gap: 10px;
+        }
+
+        .share-btn {
+            display: flex; align-items: center; gap: 8px;
+            padding: 10px 20px; border-radius: 10px;
+            font-family: 'Quicksand', sans-serif; font-size: 0.82rem; font-weight: 700;
+            cursor: pointer; transition: all 0.2s ease; border: none;
+            text-decoration: none;
+        }
+
+        .share-btn:hover { transform: translateY(-2px); }
+        .share-btn:active { transform: translateY(0); }
+
+        .share-btn.whatsapp {
+            background: var(--whatsapp-green); color: white;
+            box-shadow: 0 4px 16px rgba(37, 211, 102, 0.3);
+        }
+
+        .share-btn.copy-link {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--snow-white);
+        }
+
+        .share-btn.copy-link:hover { background: rgba(255, 255, 255, 0.2); }
+
+        .copy-feedback {
+            font-size: 0.75rem; color: var(--success-green);
+            font-weight: 600; opacity: 0; transition: opacity 0.3s ease;
+        }
+
+        .copy-feedback.visible { opacity: 1; }
+
         .footer {
             text-align: center; padding: 20px;
             font-size: 0.72rem; color: rgba(255, 255, 255, 0.4);
-            animation: fadeInUp 0.6s ease-out 0.7s both;
+            animation: fadeInUp 0.6s ease-out 0.8s both;
         }
 
         /* Overlays */
@@ -428,6 +555,19 @@
 
         .overlay-content .error-text { color: #e74c3c; }
 
+        .overlay-reminder {
+            margin-top: 16px; padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px; display: inline-block;
+        }
+
+        .overlay-reminder .reminder-line {
+            font-size: 0.88rem; color: var(--ice-pale); font-weight: 600;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 3px 0;
+        }
+
         .overlay-close-btn {
             margin-top: 24px;
             background: rgba(255, 255, 255, 0.12);
@@ -439,13 +579,18 @@
 
         .overlay-close-btn:hover { background: rgba(255, 255, 255, 0.2); }
 
+        /* Hidden state for form */
+        .form-hidden { display: none; }
+
         @media (max-width: 480px) {
             .container { padding: 16px 12px 30px; }
             .banner { padding: 30px 20px 28px; }
             .banner h1 { font-size: 1.7rem; }
             .form-card { padding: 24px 20px; }
             .guest-row .guest-fields { flex-direction: column; gap: 6px; }
-            .guest-row .guest-age-input { width: 100%; text-align: left; }
+            .guest-row .guest-age-select { width: 100%; }
+            .share-buttons { flex-direction: column; width: 100%; padding: 0 20px; }
+            .share-btn { justify-content: center; }
         }
     </style>
 </head>
@@ -460,6 +605,10 @@
             <div class="overlay-icon">❄️ ✨</div>
             <h2>Presença Confirmada!</h2>
             <p>Obrigado! Nos vemos na festa da Helena! ⛄</p>
+            <div class="overlay-reminder">
+                <div class="reminder-line">📅 26 de março de 2026, às 19h</div>
+                <div class="reminder-line">📍 Buffet Arca de Noé - Clube Mercês</div>
+            </div>
         </div>
     </div>
 
@@ -501,10 +650,15 @@
                     </div>
                 </div>
                 <div class="event-detail-row">
-                    <span class="icon">📍</span>
+                    <span class="icon"> </span>
                     <div>
                         <span class="detail-text">Buffet Arca de Noé - Clube Mercês</span><br>
                         <span class="detail-sub">R. Valério Haisi, 262 - Santa Felicidade, Curitiba/PR</span>
+                        <div style="margin-top: 5px;">
+                            <a class="maps-link" href="https://www.google.com/maps/search/?api=1&query=Buffet+Arca+de+Noé+Clube+Mercês+R.+Valério+Haisi+262+Santa+Felicidade+Curitiba+PR" target="_blank" rel="noopener">
+                                📍 Abrir no Google Maps
+                            </a>
+                        </div>
                         <div class="parking-notice">🅿️ Estacionamento no local é pago</div>
                     </div>
                 </div>
@@ -513,6 +667,21 @@
             <div class="deadline-notice">
                 ⏰ Confirme sua presença até 15/03/2026
             </div>
+        </div>
+
+        <!-- Deadline expired message (hidden by default) -->
+        <div class="deadline-expired-card form-hidden" id="deadlineExpired">
+            <div class="expired-icon">⏰</div>
+            <h3>Prazo de confirmação encerrado</h3>
+            <p>O prazo para confirmar presença era até 15/03/2026.<br>Entre em contato diretamente com os pais da Helena para mais informações.</p>
+        </div>
+
+        <!-- Already submitted message (hidden by default) -->
+        <div class="already-submitted-card form-hidden" id="alreadySubmitted">
+            <div class="submitted-icon">✅</div>
+            <h3>Você já confirmou sua presença!</h3>
+            <p>Sua resposta já foi registrada.<br>Nos vemos na festa da Helena! ❄️</p>
+            <button class="resubmit-btn" onclick="allowResubmit()">Enviar outra resposta</button>
         </div>
 
         <!-- Form -->
@@ -554,7 +723,6 @@
             <!-- Attend: guest list + dietary -->
             <div class="conditional-fields" id="attendFields">
 
-                <!-- Guest list -->
                 <div class="form-card" id="card-guests">
                     <div class="question-label">
                         Convidados <span class="required">*</span>
@@ -582,7 +750,6 @@
                     <div class="field-error" id="error-guests">Adicione ao menos 1 convidado com nome preenchido.</div>
                 </div>
 
-                <!-- Dietary restrictions -->
                 <div class="form-card">
                     <div class="question-label">
                         Alguma restrição alimentar?
@@ -603,6 +770,20 @@
 
         </form>
 
+        <!-- Share section -->
+        <div class="share-section">
+            <span class="share-section-label">Compartilhar convite</span>
+            <div class="share-buttons">
+                <a class="share-btn whatsapp" id="whatsappBtn" href="#" target="_blank" rel="noopener">
+                    💬 WhatsApp
+                </a>
+                <button class="share-btn copy-link" onclick="copyLink()">
+                    🔗 Copiar link
+                </button>
+            </div>
+            <span class="copy-feedback" id="copyFeedback">Link copiado!</span>
+        </div>
+
         <div class="footer">
             Confirmação de Presença - Festa da Helena ❄️
         </div>
@@ -611,16 +792,63 @@
 
     <script>
         // =====================================================
-        // CONFIGURAÇÃO: Cole aqui a URL do seu Google Apps Script
+        // CONFIGURAÇÃO
         // =====================================================
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyvZ7nCDGddPrTeTppQ-kUeuujppmEwDQQ-yeMl50DT2-1RWCL5bwudSXeYr7lbNS51/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby_ERYdlEUcL0-BhQRmwqsjZotkr2qi4UOEQRYKSqBWY_DqQg42-oebVGMwBvC4ffPw/exec';
+        const FORM_URL = window.location.href;
+        const DEADLINE = new Date('2026-03-16T00:00:00-03:00'); // 15/03 23:59:59
+        const STORAGE_KEY = 'helena_rsvp_submitted';
         // =====================================================
 
         let selectedAttendance = null;
         let adultCounter = 0;
         let childCounter = 0;
 
-        // Snowflakes
+        // =====================================================
+        // INIT
+        // =====================================================
+        function init() {
+            createSnowflakes();
+            setupWhatsAppLink();
+            checkDeadline();
+            checkAlreadySubmitted();
+        }
+
+        function checkDeadline() {
+            const now = new Date();
+            if (now >= DEADLINE) {
+                document.getElementById('rsvpForm').classList.add('form-hidden');
+                document.querySelector('.submit-section').classList.add('form-hidden');
+                document.getElementById('deadlineExpired').classList.remove('form-hidden');
+            }
+        }
+
+        function checkAlreadySubmitted() {
+            try {
+                if (localStorage.getItem(STORAGE_KEY)) {
+                    document.getElementById('rsvpForm').classList.add('form-hidden');
+                    document.querySelector('.submit-section').classList.add('form-hidden');
+                    document.getElementById('alreadySubmitted').classList.remove('form-hidden');
+                }
+            } catch (e) {
+                // localStorage indisponível, seguir normalmente
+            }
+        }
+
+        function allowResubmit() {
+            try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+            document.getElementById('alreadySubmitted').classList.add('form-hidden');
+            document.getElementById('rsvpForm').classList.remove('form-hidden');
+            document.querySelector('.submit-section').classList.remove('form-hidden');
+        }
+
+        function markAsSubmitted() {
+            try { localStorage.setItem(STORAGE_KEY, new Date().toISOString()); } catch (e) {}
+        }
+
+        // =====================================================
+        // SNOWFLAKES
+        // =====================================================
         function createSnowflakes() {
             const container = document.getElementById('snowflakes');
             const flakes = ['❄', '❅', '❆', '✦', '✧', '•'];
@@ -636,9 +864,42 @@
                 container.appendChild(flake);
             }
         }
-        createSnowflakes();
 
-        // Attendance selection
+        // =====================================================
+        // SHARE
+        // =====================================================
+        function setupWhatsAppLink() {
+            const text = encodeURIComponent(
+                '❄️ Festa da Helena - 4 Anos! ❄️\n\n' +
+                '📅 26 de março de 2026, às 19h\n' +
+                '📍 Buffet Arca de Noé - Clube Mercês\n\n' +
+                'Confirme sua presença:\n' + FORM_URL
+            );
+            document.getElementById('whatsappBtn').href = 'https://wa.me/?text=' + text;
+        }
+
+        function copyLink() {
+            navigator.clipboard.writeText(FORM_URL).then(() => {
+                const fb = document.getElementById('copyFeedback');
+                fb.classList.add('visible');
+                setTimeout(() => fb.classList.remove('visible'), 2000);
+            }).catch(() => {
+                // Fallback
+                const ta = document.createElement('textarea');
+                ta.value = FORM_URL;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                const fb = document.getElementById('copyFeedback');
+                fb.classList.add('visible');
+                setTimeout(() => fb.classList.remove('visible'), 2000);
+            });
+        }
+
+        // =====================================================
+        // ATTENDANCE
+        // =====================================================
         function selectAttendance(value, el) {
             const parent = el.parentElement;
             parent.querySelectorAll('.radio-option').forEach(opt => opt.classList.remove('selected'));
@@ -662,7 +923,18 @@
             }
         }
 
-        // Guest management
+        // =====================================================
+        // GUEST MANAGEMENT
+        // =====================================================
+        function buildAgeOptions() {
+            let html = '<option value="" disabled selected>Idade</option>';
+            for (let i = 0; i <= 17; i++) {
+                const label = i === 0 ? 'Menos de 1' : i === 1 ? '1 ano' : i + ' anos';
+                html += `<option value="${i}">${label}</option>`;
+            }
+            return html;
+        }
+
         function addGuest(type) {
             const isChild = type === 'children';
             const list = document.getElementById(isChild ? 'childrenList' : 'adultsList');
@@ -678,7 +950,7 @@
                 <span class="guest-number">${num}</span>
                 <div class="guest-fields">
                     <input type="text" class="guest-name-input" placeholder="Nome" data-type="${type}">
-                    ${isChild ? '<input type="number" class="guest-age-input" placeholder="Idade" min="0" max="17" data-type="child-age">' : ''}
+                    ${isChild ? `<select class="guest-age-select" data-type="child-age">${buildAgeOptions()}</select>` : ''}
                 </div>
                 <button type="button" class="remove-guest-btn" onclick="removeGuest('${id}', '${type}')" title="Remover">✕</button>
             `;
@@ -706,7 +978,6 @@
             });
         }
 
-        // Collect guest data
         function collectGuests() {
             const adults = [];
             const children = [];
@@ -718,15 +989,17 @@
 
             document.querySelectorAll('#childrenList .guest-row').forEach(row => {
                 const name = row.querySelector('.guest-name-input').value.trim();
-                const ageInput = row.querySelector('.guest-age-input');
-                const age = ageInput ? ageInput.value : '';
+                const ageSelect = row.querySelector('.guest-age-select');
+                const age = ageSelect ? ageSelect.value : '';
                 if (name) children.push({ nome: name, idade: age });
             });
 
             return { adults, children };
         }
 
-        // Validation helpers
+        // =====================================================
+        // VALIDATION
+        // =====================================================
         function showError(cardId, errorId, msg) {
             document.getElementById(cardId).classList.add('has-error');
             const errorEl = document.getElementById(errorId);
@@ -742,14 +1015,30 @@
         function clearAllErrors() {
             document.querySelectorAll('.form-card').forEach(c => c.classList.remove('has-error'));
             document.querySelectorAll('.field-error').forEach(e => e.classList.remove('visible'));
-            document.querySelectorAll('.guest-age-input').forEach(i => i.classList.remove('input-error'));
+            document.querySelectorAll('.guest-age-select').forEach(s => s.classList.remove('input-error'));
         }
 
-        // Overlays
+        // =====================================================
+        // OVERLAYS
+        // =====================================================
         function showOverlay(id) { document.getElementById(id).classList.add('active'); }
         function closeOverlay(id) { document.getElementById(id).classList.remove('active'); }
 
-        // Submit
+        // =====================================================
+        // GROUP ID
+        // =====================================================
+        function generateGroupId() {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            let id = '';
+            for (let i = 0; i < 6; i++) {
+                id += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return id;
+        }
+
+        // =====================================================
+        // SUBMIT
+        // =====================================================
         async function submitForm() {
             clearAllErrors();
             let valid = true;
@@ -760,6 +1049,7 @@
             }
 
             let payload = {};
+            const grupoId = generateGroupId();
 
             if (selectedAttendance === 'Não participarei') {
                 const declineName = document.getElementById('inputDeclineName').value.trim();
@@ -769,6 +1059,7 @@
                 }
                 payload = {
                     participacao: 'Não participarei',
+                    grupoId: grupoId,
                     nomeRecusa: declineName,
                     adultos: [],
                     criancas: [],
@@ -784,13 +1075,12 @@
                     valid = false;
                 }
 
-                // Validate child ages
                 let childAgesMissing = false;
                 document.querySelectorAll('#childrenList .guest-row').forEach(row => {
                     const name = row.querySelector('.guest-name-input').value.trim();
-                    const ageInput = row.querySelector('.guest-age-input');
-                    if (name && ageInput && !ageInput.value) {
-                        ageInput.classList.add('input-error');
+                    const ageSelect = row.querySelector('.guest-age-select');
+                    if (name && ageSelect && !ageSelect.value) {
+                        ageSelect.classList.add('input-error');
                         childAgesMissing = true;
                     }
                 });
@@ -802,6 +1092,7 @@
 
                 payload = {
                     participacao: 'Participarei',
+                    grupoId: grupoId,
                     nomeRecusa: '',
                     adultos: adults,
                     criancas: children,
@@ -827,6 +1118,8 @@
                     body: JSON.stringify(payload)
                 });
 
+                markAsSubmitted();
+
                 if (selectedAttendance === 'Participarei') {
                     showOverlay('successOverlay');
                 } else {
@@ -836,7 +1129,7 @@
                 setTimeout(() => {
                     closeOverlay('successOverlay');
                     closeOverlay('declineOverlay');
-                }, 4000);
+                }, 5000);
 
                 clearForm();
 
@@ -849,7 +1142,9 @@
             }
         }
 
-        // Clear form
+        // =====================================================
+        // CLEAR
+        // =====================================================
         function clearForm() {
             selectedAttendance = null;
             document.querySelectorAll('.radio-option').forEach(opt => opt.classList.remove('selected'));
@@ -863,6 +1158,9 @@
             childCounter = 0;
             clearAllErrors();
         }
+
+        // Init
+        init();
     </script>
 
 </body>
