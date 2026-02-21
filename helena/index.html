@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmação de Presença - Festa da Helena ❄️</title>
+    <meta name="description" content="Confirmação de presença para a festa de 4 anos da Helena - Tema Frozen">
+    <meta property="og:title" content="Festa da Helena - 4 aninhos! ❄️">
+    <meta property="og:description" content="Confirme sua presença na festa da Helena! Tema Frozen - 26/03/2026 às 19h">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>❄️</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ice-deep: #1a3a5c;
+            --ice-mid: #2d6a9f;
+            --ice-light: #7ec8e3;
+            --ice-pale: #c5e8f7;
+            --ice-glow: #e8f6fc;
+            --frost-white: #f0f8ff;
+            --snow-white: #ffffff;
+            --crystal-purple: #8b5fbf;
+            --frozen-accent: #a0d2f0;
+            --warm-gold: #d4a843;
+            --text-dark: #1a2a3a;
+            --text-mid: #3a5a7a;
+            --error-red: #c0392b;
+            --success-green: #27ae60;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(180deg, #0b1a2e 0%, #1a3a5c 30%, #2d6a9f 60%, #7ec8e3 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Snowflake animations */
+        .snowflakes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .snowflake {
+            position: absolute;
+            top: -20px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            animation: snowfall linear infinite;
+            text-shadow: 0 0 5px rgba(200, 230, 255, 0.8);
+        }
+
+        @keyframes snowfall {
+            0% { transform: translateY(-20px) rotate(0deg) translateX(0); opacity: 1; }
+            25% { transform: translateY(25vh) rotate(90deg) translateX(15px); }
+            50% { transform: translateY(50vh) rotate(180deg) translateX(-10px); opacity: 0.8; }
+            75% { transform: translateY(75vh) rotate(270deg) translateX(20px); }
+            100% { transform: translateY(105vh) rotate(360deg) translateX(-5px); opacity: 0.3; }
+        }
+
+        /* Aurora effect */
+        .aurora {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 40%;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(139, 95, 191, 0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 10%, rgba(126, 200, 227, 0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 30%, rgba(160, 210, 240, 0.1) 0%, transparent 55%);
+            pointer-events: none;
+            z-index: 0;
+            animation: auroraShift 12s ease-in-out infinite alternate;
+        }
+
+        @keyframes auroraShift {
+            0% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+            100% { opacity: 0.7; transform: scale(0.98); }
+        }
+
+        /* Main container */
+        .container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 580px;
+            padding: 20px 16px 40px;
+        }
+
+        /* Banner */
+        .banner {
+            background: linear-gradient(135deg, rgba(26, 58, 92, 0.9) 0%, rgba(45, 106, 159, 0.85) 50%, rgba(139, 95, 191, 0.7) 100%);
+            border-radius: 20px;
+            padding: 40px 30px 35px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            margin-bottom: 24px;
+        }
+
+        .banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 40%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+            animation: shimmer 8s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(5%, 3%); }
+        }
+
+        .banner-snowflake-deco {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.08);
+            font-size: 80px;
+            z-index: 0;
+        }
+        .banner-snowflake-deco:nth-child(1) { top: -10px; right: -10px; transform: rotate(15deg); }
+        .banner-snowflake-deco:nth-child(2) { bottom: -15px; left: -5px; font-size: 60px; transform: rotate(-20deg); }
+        .banner-snowflake-deco:nth-child(3) { top: 20px; left: 15px; font-size: 30px; transform: rotate(45deg); }
+
+        .banner-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 6px 18px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--ice-pale);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .banner h1 {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--snow-white);
+            text-shadow: 0 2px 20px rgba(126, 200, 227, 0.5), 0 0 40px rgba(139, 95, 191, 0.3);
+            line-height: 1.2;
+            margin-bottom: 6px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .banner .age {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--warm-gold);
+            text-shadow: 0 1px 10px rgba(212, 168, 67, 0.4);
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .banner .invite-text {
+            font-size: 1rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .event-details {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .event-detail-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 10px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .event-detail-row .icon { font-size: 1.1rem; flex-shrink: 0; }
+        .event-detail-row .detail-text { font-size: 0.85rem; font-weight: 600; color: var(--snow-white); }
+        .event-detail-row .detail-sub { font-size: 0.75rem; font-weight: 400; color: rgba(255, 255, 255, 0.65); }
+
+        .deadline-notice {
+            margin-top: 16px;
+            padding: 8px 14px;
+            background: rgba(212, 168, 67, 0.15);
+            border: 1px solid rgba(212, 168, 67, 0.3);
+            border-radius: 10px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--warm-gold);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Form card */
+        .form-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 18px;
+            padding: 30px 28px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            animation: fadeInUp 0.6s ease-out both;
+        }
+
+        .form-card:nth-child(3) { animation-delay: 0.1s; }
+        .form-card:nth-child(4) { animation-delay: 0.2s; }
+        .form-card:nth-child(5) { animation-delay: 0.3s; }
+        .form-card:nth-child(6) { animation-delay: 0.4s; }
+        .form-card:nth-child(7) { animation-delay: 0.5s; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-card .required-notice {
+            font-size: 0.78rem;
+            color: var(--error-red);
+            margin-bottom: 0;
+        }
+
+        .question-label {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 16px;
+            line-height: 1.4;
+        }
+
+        .question-label .required { color: var(--error-red); margin-left: 3px; }
+
+        /* Validation error */
+        .field-error {
+            font-size: 0.78rem;
+            color: var(--error-red);
+            margin-top: 8px;
+            display: none;
+            font-weight: 600;
+        }
+
+        .field-error.visible { display: block; }
+
+        .form-card.has-error {
+            border-color: var(--error-red);
+            box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.15), 0 8px 32px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Radio options */
+        .radio-group { display: flex; flex-direction: column; gap: 0; }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            border: 2px solid transparent;
+            user-select: none;
+        }
+
+        .radio-option:hover {
+            background: var(--ice-glow);
+            border-color: var(--ice-light);
+        }
+
+        .radio-option.selected {
+            background: linear-gradient(135deg, rgba(126, 200, 227, 0.12) 0%, rgba(160, 210, 240, 0.08) 100%);
+            border-color: var(--ice-mid);
+        }
+
+        .radio-circle {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 2px solid #b0bec5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.25s ease;
+        }
+
+        .radio-option.selected .radio-circle { border-color: var(--ice-mid); }
+
+        .radio-circle-inner {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--ice-mid);
+            transform: scale(0);
+            transition: transform 0.2s ease;
+        }
+
+        .radio-option.selected .radio-circle-inner { transform: scale(1); }
+
+        .radio-label { font-size: 0.9rem; font-weight: 500; color: var(--text-dark); }
+
+        /* Conditional fields */
+        .conditional-fields {
+            display: none;
+        }
+
+        .conditional-fields.visible {
+            display: block;
+        }
+
+        /* Text inputs */
+        .text-input {
+            width: 100%;
+            border: none;
+            border-bottom: 2px solid #dde4ea;
+            padding: 12px 4px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            background: transparent;
+            transition: border-color 0.3s ease;
+            outline: none;
+        }
+
+        .text-input:focus { border-bottom-color: var(--ice-mid); }
+        .text-input::placeholder { color: #a0aec0; font-weight: 400; }
+
+        /* Number inputs */
+        .number-row { display: flex; gap: 20px; }
+        .number-field { flex: 1; }
+
+        .number-field label {
+            display: block;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-mid);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .number-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--ice-glow);
+            border-radius: 12px;
+            padding: 8px 12px;
+            border: 2px solid rgba(126, 200, 227, 0.2);
+            transition: border-color 0.3s ease;
+        }
+
+        .number-input-wrapper:focus-within { border-color: var(--ice-mid); }
+        .number-input-wrapper .icon { font-size: 1.2rem; }
+
+        .number-input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            outline: none;
+            text-align: center;
+        }
+
+        .number-input::-webkit-inner-spin-button,
+        .number-input::-webkit-outer-spin-button { opacity: 1; height: 28px; }
+
+        /* Textarea */
+        .textarea-input {
+            width: 100%;
+            border: 2px solid #dde4ea;
+            border-radius: 12px;
+            padding: 14px 16px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            background: var(--frost-white);
+            transition: border-color 0.3s ease;
+            outline: none;
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .textarea-input:focus { border-color: var(--ice-mid); }
+        .textarea-input::placeholder { color: #a0aec0; font-weight: 400; }
+
+        /* Submit section */
+        .submit-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: fadeInUp 0.6s ease-out 0.6s both;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, var(--ice-mid) 0%, var(--crystal-purple) 100%);
+            color: white;
+            border: none;
+            padding: 14px 40px;
+            border-radius: 12px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(45, 106, 159, 0.35);
+            letter-spacing: 0.5px;
+            position: relative;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 28px rgba(45, 106, 159, 0.45);
+        }
+
+        .submit-btn:active { transform: translateY(0); }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .submit-btn .spinner {
+            display: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .submit-btn.loading .spinner { display: inline-block; }
+        .submit-btn.loading .btn-text { opacity: 0.8; }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .clear-link {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--ice-pale);
+            text-decoration: none;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            background: none;
+            border: none;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        .clear-link:hover { color: var(--snow-white); }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.72rem;
+            color: rgba(255, 255, 255, 0.4);
+            animation: fadeInUp 0.6s ease-out 0.7s both;
+        }
+
+        /* Overlays */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(11, 26, 46, 0.92);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .overlay.active { display: flex; }
+
+        .overlay-content {
+            text-align: center;
+            padding: 40px;
+            animation: successPop 0.5s ease-out;
+        }
+
+        @keyframes successPop {
+            0% { opacity: 0; transform: scale(0.8); }
+            50% { transform: scale(1.05); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .overlay-icon { font-size: 4rem; margin-bottom: 20px; }
+
+        .overlay-content h2 {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.8rem;
+            color: var(--snow-white);
+            margin-bottom: 12px;
+            text-shadow: 0 2px 15px rgba(126, 200, 227, 0.4);
+        }
+
+        .overlay-content p {
+            font-size: 1rem;
+            color: var(--ice-pale);
+            font-weight: 500;
+            line-height: 1.6;
+        }
+
+        .overlay-content .error-text { color: #e74c3c; }
+
+        .overlay-close-btn {
+            margin-top: 24px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: white;
+            padding: 10px 28px;
+            border-radius: 10px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .overlay-close-btn:hover { background: rgba(255, 255, 255, 0.2); }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container { padding: 16px 12px 30px; }
+            .banner { padding: 30px 20px 28px; }
+            .banner h1 { font-size: 1.7rem; }
+            .form-card { padding: 24px 20px; }
+            .number-row { flex-direction: column; gap: 14px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="aurora"></div>
+    <div class="snowflakes" id="snowflakes"></div>
+
+    <!-- Success overlay -->
+    <div class="overlay" id="successOverlay">
+        <div class="overlay-content">
+            <div class="overlay-icon">❄️ ✨</div>
+            <h2>Presença Confirmada!</h2>
+            <p>Obrigado! Nos vemos na festa da Helena! ⛄</p>
+        </div>
+    </div>
+
+    <!-- Decline overlay -->
+    <div class="overlay" id="declineOverlay">
+        <div class="overlay-content">
+            <div class="overlay-icon">⛄</div>
+            <h2>Que pena!</h2>
+            <p>Sentiremos sua falta. Obrigado por responder!</p>
+        </div>
+    </div>
+
+    <!-- Error overlay -->
+    <div class="overlay" id="errorOverlay">
+        <div class="overlay-content">
+            <div class="overlay-icon">⚠️</div>
+            <h2>Ops!</h2>
+            <p class="error-text">Ocorreu um erro ao enviar sua resposta.<br>Por favor, tente novamente.</p>
+            <button class="overlay-close-btn" onclick="closeOverlay('errorOverlay')">Fechar</button>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <!-- Banner -->
+        <div class="banner">
+            <span class="banner-snowflake-deco">❄</span>
+            <span class="banner-snowflake-deco">❄</span>
+            <span class="banner-snowflake-deco">✦</span>
+
+            <div class="banner-tag">❄ Tema Frozen ❄</div>
+            <h1>Helena</h1>
+            <div class="age">faz 4 aninhos!</div>
+            <p class="invite-text">Venha comemorar comigo! ⛄❄️</p>
+
+            <div class="event-details">
+                <div class="event-detail-row">
+                    <span class="icon">📅</span>
+                    <div>
+                        <span class="detail-text">26 de março de 2026, às 19h</span>
+                    </div>
+                </div>
+                <div class="event-detail-row">
+                    <span class="icon">📍</span>
+                    <div>
+                        <span class="detail-text">Buffet Arca de Noé - Clube Mercês</span><br>
+                        <span class="detail-sub">R. Valério Haisi, 262 - Santa Felicidade, Curitiba/PR</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="deadline-notice">
+                ⏰ Confirme sua presença até 15/03/2026
+            </div>
+        </div>
+
+        <!-- Form -->
+        <form id="rsvpForm" onsubmit="return false;">
+
+            <div class="form-card">
+                <p class="required-notice">* Indica uma pergunta obrigatória</p>
+            </div>
+
+            <!-- Q1: Attendance -->
+            <div class="form-card" id="card-attendance">
+                <div class="question-label">
+                    Você pode participar? <span class="required">*</span>
+                </div>
+                <div class="radio-group">
+                    <div class="radio-option" onclick="selectAttendance('Participarei', this)" data-value="Participarei">
+                        <div class="radio-circle"><div class="radio-circle-inner"></div></div>
+                        <span class="radio-label">Participarei ❄️</span>
+                    </div>
+                    <div class="radio-option" onclick="selectAttendance('Não participarei', this)" data-value="Não participarei">
+                        <div class="radio-circle"><div class="radio-circle-inner"></div></div>
+                        <span class="radio-label">Não participarei</span>
+                    </div>
+                </div>
+                <div class="field-error" id="error-attendance">Por favor, selecione uma opção.</div>
+            </div>
+
+            <!-- Conditional fields: shown only when "Participarei" is selected -->
+            <div class="conditional-fields" id="conditionalFields">
+
+                <!-- Q2: Names -->
+                <div class="form-card" id="card-names">
+                    <div class="question-label">
+                        Quais são os nomes das pessoas que participarão? <span class="required">*</span>
+                    </div>
+                    <input type="text" class="text-input" id="inputNomes" placeholder="Sua resposta">
+                    <div class="field-error" id="error-names">Por favor, informe os nomes.</div>
+                </div>
+
+                <!-- Q3: Number of guests -->
+                <div class="form-card" id="card-quantity">
+                    <div class="question-label">
+                        Quantidade de convidados <span class="required">*</span>
+                    </div>
+                    <div class="number-row">
+                        <div class="number-field">
+                            <label>Adultos</label>
+                            <div class="number-input-wrapper">
+                                <span class="icon">🧑</span>
+                                <input type="number" class="number-input" id="inputAdultos" min="0" max="20" value="1">
+                            </div>
+                        </div>
+                        <div class="number-field">
+                            <label>Crianças</label>
+                            <div class="number-input-wrapper">
+                                <span class="icon">👧</span>
+                                <input type="number" class="number-input" id="inputCriancas" min="0" max="20" value="0">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field-error" id="error-quantity">Informe ao menos 1 convidado.</div>
+                </div>
+
+                <!-- Q4: Dietary restrictions -->
+                <div class="form-card">
+                    <div class="question-label">
+                        Alguma restrição alimentar?
+                    </div>
+                    <textarea class="textarea-input" id="inputRestricao" placeholder="Exemplo: alergia a amendoim, intolerância a lactose..."></textarea>
+                </div>
+
+            </div>
+
+            <!-- Submit -->
+            <div class="submit-section">
+                <button type="button" class="submit-btn" id="submitBtn" onclick="submitForm()">
+                    <span class="spinner"></span>
+                    <span class="btn-text">Enviar</span>
+                </button>
+                <button type="button" class="clear-link" onclick="clearForm()">Limpar formulário</button>
+            </div>
+
+        </form>
+
+        <div class="footer">
+            Confirmação de Presença - Festa da Helena ❄️
+        </div>
+
+    </div>
+
+    <script>
+        // =====================================================
+        // CONFIGURAÇÃO: Cole aqui a URL do seu Google Apps Script
+        // =====================================================
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzOSJhELzrqmEu1Kzwb_fItIdx3lK2vTTb4oAeDGFtrLB7OTnrcjvgBZkywwuJvEas/exec';
+        // =====================================================
+
+        let selectedAttendance = null;
+
+        // Snowflake generation
+        function createSnowflakes() {
+            const container = document.getElementById('snowflakes');
+            const flakes = ['❄', '❅', '❆', '✦', '✧', '•'];
+            for (let i = 0; i < 35; i++) {
+                const flake = document.createElement('span');
+                flake.className = 'snowflake';
+                flake.textContent = flakes[Math.floor(Math.random() * flakes.length)];
+                flake.style.left = Math.random() * 100 + '%';
+                flake.style.fontSize = (Math.random() * 1.2 + 0.4) + 'rem';
+                flake.style.opacity = Math.random() * 0.6 + 0.2;
+                flake.style.animationDuration = (Math.random() * 10 + 8) + 's';
+                flake.style.animationDelay = (Math.random() * 15) + 's';
+                container.appendChild(flake);
+            }
+        }
+        createSnowflakes();
+
+        // Attendance selection
+        function selectAttendance(value, el) {
+            const parent = el.parentElement;
+            parent.querySelectorAll('.radio-option').forEach(opt => opt.classList.remove('selected'));
+            el.classList.add('selected');
+            selectedAttendance = value;
+
+            // Clear error
+            clearError('card-attendance', 'error-attendance');
+
+            // Show/hide conditional fields
+            const conditional = document.getElementById('conditionalFields');
+            if (value === 'Participarei') {
+                conditional.classList.add('visible');
+            } else {
+                conditional.classList.remove('visible');
+            }
+        }
+
+        // Validation helpers
+        function showError(cardId, errorId) {
+            document.getElementById(cardId).classList.add('has-error');
+            document.getElementById(errorId).classList.add('visible');
+        }
+
+        function clearError(cardId, errorId) {
+            document.getElementById(cardId).classList.remove('has-error');
+            document.getElementById(errorId).classList.remove('visible');
+        }
+
+        function clearAllErrors() {
+            document.querySelectorAll('.form-card').forEach(c => c.classList.remove('has-error'));
+            document.querySelectorAll('.field-error').forEach(e => e.classList.remove('visible'));
+        }
+
+        // Overlay controls
+        function showOverlay(id) {
+            document.getElementById(id).classList.add('active');
+        }
+
+        function closeOverlay(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        // Submit
+        async function submitForm() {
+            clearAllErrors();
+            let valid = true;
+
+            // Validate attendance
+            if (!selectedAttendance) {
+                showError('card-attendance', 'error-attendance');
+                valid = false;
+            }
+
+            // If attending, validate additional fields
+            if (selectedAttendance === 'Participarei') {
+                const nomes = document.getElementById('inputNomes').value.trim();
+                const adultos = parseInt(document.getElementById('inputAdultos').value) || 0;
+                const criancas = parseInt(document.getElementById('inputCriancas').value) || 0;
+
+                if (!nomes) {
+                    showError('card-names', 'error-names');
+                    valid = false;
+                }
+
+                if (adultos + criancas < 1) {
+                    showError('card-quantity', 'error-quantity');
+                    valid = false;
+                }
+            }
+
+            if (!valid) {
+                // Scroll to first error
+                const firstError = document.querySelector('.form-card.has-error');
+                if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+
+            // Build payload
+            const payload = {
+                participacao: selectedAttendance,
+                nomes: selectedAttendance === 'Participarei'
+                    ? document.getElementById('inputNomes').value.trim()
+                    : '',
+                adultos: selectedAttendance === 'Participarei'
+                    ? parseInt(document.getElementById('inputAdultos').value) || 0
+                    : 0,
+                criancas: selectedAttendance === 'Participarei'
+                    ? parseInt(document.getElementById('inputCriancas').value) || 0
+                    : 0,
+                restricao: selectedAttendance === 'Participarei'
+                    ? document.getElementById('inputRestricao').value.trim()
+                    : ''
+            };
+
+            // Disable button and show loading
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.classList.add('loading');
+
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                // mode: no-cors returns opaque response, so we assume success
+                if (selectedAttendance === 'Participarei') {
+                    showOverlay('successOverlay');
+                } else {
+                    showOverlay('declineOverlay');
+                }
+
+                // Auto close after 4s
+                setTimeout(() => {
+                    closeOverlay('successOverlay');
+                    closeOverlay('declineOverlay');
+                }, 4000);
+
+                clearForm();
+
+            } catch (error) {
+                console.error('Erro ao enviar:', error);
+                showOverlay('errorOverlay');
+            } finally {
+                btn.disabled = false;
+                btn.classList.remove('loading');
+            }
+        }
+
+        // Clear form
+        function clearForm() {
+            selectedAttendance = null;
+            document.querySelectorAll('.radio-option').forEach(opt => opt.classList.remove('selected'));
+            document.getElementById('inputNomes').value = '';
+            document.getElementById('inputAdultos').value = '1';
+            document.getElementById('inputCriancas').value = '0';
+            document.getElementById('inputRestricao').value = '';
+            document.getElementById('conditionalFields').classList.remove('visible');
+            clearAllErrors();
+        }
+    </script>
+
+</body>
+</html>
