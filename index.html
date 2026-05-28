@@ -4,105 +4,533 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Luis Cruz/@luiscruz">
-    <title>Olá!</title>
+    <meta name="description" content="Luis Cruz — Analista de Infraestrutura e Segurança, DevOps & SRE. Apaixonado por automação, nuvem, segurança e ciclismo.">
+    <meta name="author" content="Luis Cruz">
+    <title>Luis Cruz | DevOps & SRE</title>
 
-    <!-- Favicon / Trocar a URL -->
-    <link rel="shortcut icon" href="https://img.icons8.com/?size=512&id=52515&format=png" />
+    <!-- Open Graph (preview em redes sociais) -->
+    <meta property="og:title" content="Luis Cruz | DevOps & SRE">
+    <meta property="og:description" content="Analista de Infraestrutura e Segurança. Apaixonado por automação, nuvem e segurança.">
+    <meta property="og:image" content="https://luiscruz.com.br/img/luis_cruz_perfil.jpg">
+    <meta property="og:url" content="https://luiscruz.com.br">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Luis Cruz | DevOps & SRE">
+    <meta name="twitter:description" content="Analista de Infraestrutura e Segurança. Apaixonado por automação, nuvem e segurança.">
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" type="text/css" href="font/bootstrap-icons.css">
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <!-- Favicon SVG inline (sem dependência externa) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='80'>💻</text></svg>">
 
-    <!-- Custom font styles for this template // Google Font -->
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+    <!-- Apenas Bootstrap Icons (sem Bootstrap CSS/JS) -->
+    <link rel="stylesheet" href="font/bootstrap-icons.css">
 
+    <!-- Fira Code com font-display: swap -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap&display=swap" rel="stylesheet">
+
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #0d1117;
+            font-family: 'Fira Code', monospace;
+            color: #c9d1d9;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        @media (min-height: 700px) {
+            body { align-items: center; }
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: color 0.3s ease;
+        }
+
+        /* Terminal */
+        .terminal {
+            width: 90%;
+            max-width: 800px;
+            background-color: #161b22;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px #30363d;
+            overflow: hidden;
+            animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(24px) scale(0.98); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Header */
+        .terminal-header {
+            background-color: #21262d;
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #30363d;
+            position: relative;
+            user-select: none;
+        }
+
+        .terminal-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .terminal-buttons span {
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            cursor: default;
+            transition: filter 0.2s;
+        }
+
+        .terminal-buttons span:hover { filter: brightness(1.2); }
+
+        .btn-close    { background-color: #ff5f56; }
+        .btn-minimize { background-color: #ffbd2e; }
+        .btn-maximize { background-color: #27c93f; }
+
+        .terminal-title {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.85rem;
+            color: #8b949e;
+            pointer-events: none;
+        }
+
+        /* Body */
+        .terminal-body {
+            padding: 24px;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .section {
+            margin-bottom: 4px;
+        }
+
+        /* Command line */
+        .command-line {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        .prompt {
+            color: #7ee787;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .command { color: #a5d6ff; }
+
+        /* Output */
+        .output {
+            margin-bottom: 22px;
+            color: #c9d1d9;
+            transition: opacity 0.4s ease;
+        }
+
+        /* Profile */
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .profile-pic {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 2px solid #58a6ff;
+            box-shadow: 0 0 20px rgba(88, 166, 255, 0.2);
+            object-fit: cover;
+        }
+
+        .profile-info h1 {
+            font-size: 1.6rem;
+            color: #f0f6fc;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .role {
+            margin-top: 4px;
+            color: #8b949e;
+            font-size: 0.9rem;
+        }
+
+        /* Stack / JSON */
+        .json-output pre {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            line-height: 1.75;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .json-key    { color: #d2a8ff; }
+        .json-string { color: #a5d6ff; }
+        .json-bracket { color: #f0f6fc; }
+        .json-comma  { color: #8b949e; }
+
+        /* Links */
+        .links-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .link-item {
+            display: flex;
+            gap: 12px;
+            font-size: 0.9rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .permissions { color: #d2a8ff; }
+        .file-info   { color: #ffa657; }
+
+        .link-item a {
+            color: #58a6ff;
+            transition: color 0.2s;
+        }
+
+        .link-item a:hover {
+            color: #79c0ff;
+            text-decoration: underline;
+        }
+
+        /* Certifications */
+        .certs-grid {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            align-items: flex-start;
+        }
+
+        .cert-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            text-align: center;
+            width: 80px;
+        }
+
+        .cert-badge img {
+            width: 72px;
+            height: 72px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
+            transition: transform 0.25s ease, filter 0.25s ease;
+            border-radius: 4px;
+        }
+
+        .cert-badge img:hover {
+            transform: scale(1.12) translateY(-3px);
+            filter: drop-shadow(0 6px 16px rgba(88, 166, 255, 0.35));
+        }
+
+        .cert-name {
+            font-size: 0.70rem;
+            color: #8b949e;
+            width: 100%;
+            line-height: 1.4;
+        }
+
+        /* Social */
+        .social-icons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #8b949e;
+            padding: 7px 14px;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            transition: color 0.25s, border-color 0.25s, background 0.25s, transform 0.2s;
+            text-decoration: none;
+        }
+
+        .social-link:hover {
+            color: #f0f6fc;
+            border-color: #58a6ff;
+            background: rgba(88, 166, 255, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .social-link i { font-size: 1.1rem; }
+
+        .social-label { font-size: 0.85rem; }
+
+        /* Cursor */
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 1.1em;
+            background-color: #7ee787;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+            border-radius: 1px;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50%       { opacity: 0; }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            body { padding: 10px; }
+            .terminal-title { display: none; }
+            .terminal-body { padding: 16px; }
+            .profile-section { flex-direction: column; text-align: center; }
+            .profile-info h1 { justify-content: center; font-size: 1.4rem; }
+            .link-item { font-size: 0.82rem; gap: 8px; }
+            .permissions, .file-info { font-size: 0.78rem; }
+            .social-icons { gap: 8px; }
+            .social-link { padding: 6px 10px; }
+            .social-label { font-size: 0.8rem; }
+        }
+    </style>
 </head>
 
 <body>
 
-    <main class="terminal">
-        <!-- Terminal Header -->
-        <div class="terminal-header">
-            <div class="terminal-buttons">
-                <span class="close"></span>
-                <span class="minimize"></span>
-                <span class="maximize"></span>
+    <main class="terminal" role="main" aria-label="Terminal de apresentação de Luis Cruz">
+
+        <!-- Header -->
+        <div class="terminal-header" role="banner">
+            <div class="terminal-buttons" aria-hidden="true">
+                <span class="btn-close"></span>
+                <span class="btn-minimize"></span>
+                <span class="btn-maximize"></span>
             </div>
             <div class="terminal-title">user@luiscruz: ~</div>
         </div>
 
-        <!-- Terminal Body -->
-        <div class="terminal-body">
-            <!-- Command: whoami -->
-            <div class="command-line">
-                <span class="prompt">user@luiscruz:~$</span> <span class="command">whoami</span>
-            </div>
-            <div class="output">
-                <div class="profile-section">
-                    <img src="img/luis_cruz_perfil.jpg" alt="Luis Cruz" class="profile-pic">
+        <!-- Body -->
+        <div class="terminal-body" role="log" aria-live="polite">
+
+            <!-- whoami -->
+            <div class="section" id="sec-whoami">
+                <div class="command-line">
+                    <span class="prompt" aria-hidden="true">user@luiscruz:~$</span>
+                    <span class="command" id="cmd-whoami"></span>
+                </div>
+                <div class="output profile-section" id="out-whoami" hidden>
+                    <img src="img/luis_cruz_perfil.jpg" alt="Foto de perfil de Luis Cruz" class="profile-pic" loading="lazy">
                     <div class="profile-info">
                         <h1>Luis Cruz</h1>
-                        <p>Analista de Infraestrutura e Segurança | DevOps & SRE</p>
+                        <p class="role">Analista de Infraestrutura e Segurança | DevOps &amp; SRE</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Command: cat about.txt -->
-            <div class="command-line">
-                <span class="prompt">user@luiscruz:~$</span> <span class="command">cat about.txt</span>
-            </div>
-            <div class="output">
-                <p>Um apaixonado por automação, nuvem, segurança e ciclismo. Transformando xícaras de café em
-                    infraestrutura como código.</p>
-            </div>
-
-            <!-- Command: ls -la ./links -->
-            <div class="command-line">
-                <span class="prompt">user@luiscruz:~$</span> <span class="command">ls -la ./links</span>
-            </div>
-            <div class="output links-list">
-                <div class="link-item">
-                    <span class="permissions">drwxr-xr-x</span> <span class="user">root</span> <span
-                        class="group">root</span> <a href="https://dev.to/luiscruzcwb"
-                        target="_blank">./portfolio_projetos</a>
+            <!-- cat about.txt -->
+            <div class="section" id="sec-about">
+                <div class="command-line">
+                    <span class="prompt" aria-hidden="true">user@luiscruz:~$</span>
+                    <span class="command" id="cmd-about"></span>
                 </div>
-                <div class="link-item">
-                    <span class="permissions">drwxr-xr-x</span> <span class="user">root</span> <span
-                        class="group">root</span> <a href="https://wiki.luiscruz.com.br/" target="_blank">./tec-wiki</a>
-                </div>
-                <div class="link-item">
-                    <span class="permissions">-rwxr--r--</span> <span class="user">root</span> <span
-                        class="group">root</span> <a href="curriculo_luis_fernando_ribas_da_cruz.pdf"
-                        target="_blank">./curriculo.pdf</a>
+                <div class="output" id="out-about" hidden>
+                    <p>Um apaixonado por automação, nuvem, segurança e ciclismo.<br>
+                    Transformando xícaras de café em infraestrutura como código.</p>
                 </div>
             </div>
 
-            <!-- Command: ./contact.sh -->
-            <div class="command-line">
-                <span class="prompt">user@luiscruz:~$</span> <span class="command">./contact.sh</span>
-            </div>
-            <div class="output social-icons">
-                <a href="https://www.linkedin.com/in/luiscruzcwb/" target="_blank" title="LinkedIn"><i class="bi bi-linkedin"></i></a>
-                <a href="https://github.com/luiscruzcwb" target="_blank" title="Github"><i class="bi bi-github"></i></a>
-                <a href="mailto:contato@luiscruz.com.br" title="Email"><i class="bi bi-envelope"></i></a>
-                <a href="https://api.whatsapp.com/send?phone=5541991948576" target="_blank" title="WhatsApp"><i class="bi bi-telephone"></i></a>
+            <!-- cat stack.json -->
+            <div class="section" id="sec-stack">
+                <div class="command-line">
+                    <span class="prompt" aria-hidden="true">user@luiscruz:~$</span>
+                    <span class="command" id="cmd-stack"></span>
+                </div>
+                <div class="output json-output" id="out-stack" hidden>
+                    <pre><span class="json-bracket">{</span>
+  <span class="json-key">"virtualização e infra"</span>: [<span class="json-string">"VMware ESXi"</span>, <span class="json-string">"Proxmox"</span>, <span class="json-string">"Docker"</span>, <span class="json-string">"Kubernetes (EKS/GKE)"</span>]<span class="json-comma">,</span>
+  <span class="json-key">"cloud operations"</span>:      [<span class="json-string">"AWS"</span>, <span class="json-string">"Google Cloud Platform"</span>, <span class="json-string">"Azure"</span>]<span class="json-comma">,</span>
+  <span class="json-key">"iac e automação"</span>:       [<span class="json-string">"Terraform"</span>, <span class="json-string">"Ansible"</span>, <span class="json-string">"GitHub Actions"</span>, <span class="json-string">"GitLab CI"</span>, <span class="json-string">"Python"</span>, <span class="json-string">"Shell Script"</span>, <span class="json-string">"Linux (Avançado)"</span>]<span class="json-comma">,</span>
+  <span class="json-key">"redes e segurança"</span>:     [<span class="json-string">"Fortinet NGFW"</span>, <span class="json-string">"VPN"</span>, <span class="json-string">"Active Directory"</span>, <span class="json-string">"LGPD/GDPR"</span>, <span class="json-string">"ITIL/COBIT"</span>]<span class="json-comma">,</span>
+  <span class="json-key">"monitoramento"</span>:         [<span class="json-string">"Zabbix"</span>, <span class="json-string">"Prometheus"</span>, <span class="json-string">"Grafana"</span>, <span class="json-string">"Dynatrace"</span>, <span class="json-string">"ELK Stack"</span>, <span class="json-string">"New Relic"</span>, <span class="json-string">"Sentry"</span>]<span class="json-comma">,</span>
+  <span class="json-key">"itsm e governança"</span>:     [<span class="json-string">"GLPI"</span>, <span class="json-string">"ITIL"</span>, <span class="json-string">"COBIT"</span>, <span class="json-string">"Incident Management"</span>, <span class="json-string">"On-call"</span>, <span class="json-string">"FinOps"</span>]
+<span class="json-bracket">}</span></pre>
+                </div>
             </div>
 
-            <!-- Cursor -->
-            <div class="command-line">
-                <span class="prompt">user@luiscruz:~$</span> <span class="cursor">_</span>
+            <!-- ls ./certifications/ -->
+            <div class="section" id="sec-certs">
+                <div class="command-line">
+                    <span class="prompt" aria-hidden="true">user@luiscruz:~$</span>
+                    <span class="command" id="cmd-certs"></span>
+                </div>
+                <div class="output certs-grid" id="out-certs" hidden>
+                    <div class="cert-badge">
+                        <img src="img/dynatrace-essentials.png"
+                             alt="Dynatrace Essentials badge" loading="lazy">
+                        <span class="cert-name">Dynatrace Essentials</span>
+                    </div>
+                    <div class="cert-badge">
+                        <img src="https://images.credly.com/size/160x160/images/00634f82-b07f-4bbd-a6bb-53de397fc3a6/image.png"
+                             alt="AWS Certification badge" loading="lazy">
+                        <span class="cert-name">AWS Practitioner</span>
+                    </div>
+                    <div class="cert-badge">
+                        <img src="https://images.credly.com/size/160x160/images/20082fc1-94af-4773-9df0-28856b566748/image.png"
+                             alt="Cybersecurity Certification badge" loading="lazy">
+                        <span class="cert-name">Cybersecurity</span>
+                    </div>
+                    <div class="cert-badge">
+                        <img src="https://images.credly.com/size/160x160/images/22a0ece5-ff05-4594-8320-25e55e9ae203/image.png"
+                             alt="Fortinet Certification badge" loading="lazy">
+                        <span class="cert-name">Fortinet</span>
+                    </div>
+                    <div class="cert-badge">
+                        <img src="https://images.credly.com/size/160x160/images/4b6db74c-f2da-4958-ad21-27288f2dd7f3/image.png"
+                             alt="Fortinet Operator badge" loading="lazy">
+                        <span class="cert-name">Fortinet Operator</span>
+                    </div>
+                </div>
             </div>
+
+            <!-- ls -la ./links -->
+            <div class="section" id="sec-links">
+                <div class="command-line">
+                    <span class="prompt" aria-hidden="true">user@luiscruz:~$</span>
+                    <span class="command" id="cmd-links"></span>
+                </div>
+                <div class="output links-list" id="out-links" hidden>
+                    <div class="link-item">
+                        <span class="permissions">drwxr-xr-x</span>
+                        <span class="file-info">root root</span>
+                        <a href="https://dev.to/luiscruzcwb" target="_blank" rel="noopener noreferrer">./portfolio_projetos</a>
+                    </div>
+                    <div class="link-item">
+                        <span class="permissions">-rwxr--r--</span>
+                        <span class="file-info">root root</span>
+                        <a href="curriculo_luis_fernando_ribas_da_cruz.pdf" target="_blank" rel="noopener noreferrer">./curriculo.pdf</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ./contact.sh -->
+            <div class="section" id="sec-contact">
+                <div class="command-line">
+                    <span class="prompt" aria-hidden="true">user@luiscruz:~$</span>
+                    <span class="command" id="cmd-contact"></span>
+                </div>
+                <div class="output social-icons" id="out-contact" hidden>
+                    <a href="https://api.whatsapp.com/send?phone=5541991948576" target="_blank" rel="noopener noreferrer"
+                       class="social-link" aria-label="WhatsApp de Luis Cruz">
+                        <i class="bi bi-telephone" aria-hidden="true"></i>
+                        <span class="social-label">WhatsApp</span>
+                    </a>
+                    <a href="https://www.linkedin.com/in/luiscruzcwb/" target="_blank" rel="noopener noreferrer"
+                       class="social-link" aria-label="LinkedIn de Luis Cruz">
+                        <i class="bi bi-linkedin" aria-hidden="true"></i>
+                        <span class="social-label">LinkedIn</span>
+                    </a>
+                    <a href="mailto:contato@luiscruz.com.br"
+                       class="social-link" aria-label="Email de Luis Cruz">
+                        <i class="bi bi-envelope" aria-hidden="true"></i>
+                        <span class="social-label">Email</span>
+                    </a>
+                    <a href="https://github.com/luiscruzcwb" target="_blank" rel="noopener noreferrer"
+                       class="social-link" aria-label="GitHub de Luis Cruz">
+                        <i class="bi bi-github" aria-hidden="true"></i>
+                        <span class="social-label">GitHub</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Cursor final -->
+            <div class="command-line" id="final-cursor" hidden>
+                <span class="prompt" aria-hidden="true">user@luiscruz:~$</span>
+                <span class="cursor" aria-hidden="true"></span>
+            </div>
+
         </div>
     </main>
 
-</body>
-<!-- Bootstrap core JS -->
-<script src="js/bootstrap.js"></script>
+    <script>
+        const sequences = [
+            { cmdId: 'cmd-whoami',  cmdText: 'whoami',        outId: 'out-whoami'  },
+            { cmdId: 'cmd-about',   cmdText: 'cat about.txt', outId: 'out-about'   },
+            { cmdId: 'cmd-stack',   cmdText: 'cat stack.json', outId: 'out-stack'  },
+            { cmdId: 'cmd-certs',   cmdText: 'ls ./certifications/', outId: 'out-certs'  },
+            { cmdId: 'cmd-links',   cmdText: 'ls -la ./links', outId: 'out-links'  },
+            { cmdId: 'cmd-contact', cmdText: './contact.sh',   outId: 'out-contact' },
+        ];
 
+        const delay = ms => new Promise(r => setTimeout(r, ms));
+
+        function typeText(el, text, speed = 52) {
+            return new Promise(resolve => {
+                let i = 0;
+                el.textContent = '';
+                const tick = () => {
+                    if (i < text.length) {
+                        el.textContent += text[i++];
+                        setTimeout(tick, speed + Math.random() * 20);
+                    } else {
+                        resolve();
+                    }
+                };
+                tick();
+            });
+        }
+
+        function showOutput(el) {
+            el.removeAttribute('hidden');
+            el.style.opacity = '0';
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+                el.style.opacity = '1';
+            }));
+            return delay(420);
+        }
+
+        async function runTerminal() {
+            await delay(300);
+            for (const seq of sequences) {
+                const cmdEl = document.getElementById(seq.cmdId);
+                const outEl = document.getElementById(seq.outId);
+                await typeText(cmdEl, seq.cmdText);
+                await delay(160);
+                await showOutput(outEl);
+                await delay(280);
+            }
+            document.getElementById('final-cursor').removeAttribute('hidden');
+        }
+
+        document.addEventListener('DOMContentLoaded', runTerminal);
+    </script>
+
+</body>
 </html>
