@@ -1,0 +1,805 @@
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Case study SRE: resposta a incidente de latência, SLOs, observabilidade, tracing com OpenTelemetry e análise de custo (FinOps). Por Luis Cruz.">
+    <meta name="author" content="Luis Cruz">
+    <title>Case SRE: Incidente, SLOs & Observabilidade | Luis Cruz</title>
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Case SRE: Incidente, SLOs & Observabilidade">
+    <meta property="og:description" content="Da degradação de latência (P95 220ms → 5.200ms) à estratégia de observabilidade, SLOs e FinOps. Um case study de SRE.">
+    <meta property="og:image" content="https://luiscruz.com.br/img/luis_cruz_perfil.jpg">
+    <meta property="og:url" content="https://luiscruz.com.br/case-sre">
+    <meta property="og:type" content="article">
+    <meta name="twitter:card" content="summary">
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='80'>📟</text></svg>">
+
+    <link rel="stylesheet" href="../font/bootstrap-icons.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg:        #0d1117;
+            --panel:     #161b22;
+            --panel-2:   #21262d;
+            --border:    #30363d;
+            --text:      #c9d1d9;
+            --muted:     #8b949e;
+            --bright:    #f0f6fc;
+            --green:     #7ee787;
+            --blue:      #58a6ff;
+            --cyan:      #a5d6ff;
+            --purple:    #d2a8ff;
+            --orange:    #ffa657;
+            --yellow:    #e3b341;
+            --red:       #ff7b72;
+            --danger:    #f85149;
+            --success:   #3fb950;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(ellipse 80% 50% at 50% -10%, rgba(88,166,255,0.08), transparent 70%),
+                linear-gradient(rgba(48,54,61,0.20) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(48,54,61,0.20) 1px, transparent 1px);
+            background-size: auto, 44px 44px, 44px 44px;
+            background-attachment: fixed;
+            font-family: 'Fira Code', monospace;
+            color: var(--text);
+            line-height: 1.7;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        a { color: var(--blue); text-decoration: none; transition: color .2s; }
+        a:hover { color: var(--cyan); text-decoration: underline; }
+
+        .wrap { width: 100%; max-width: 920px; margin: 0 auto; }
+
+        /* ===== Terminal window chrome ===== */
+        .terminal {
+            background-color: var(--panel);
+            border-radius: 10px;
+            box-shadow: 0 24px 70px rgba(0,0,0,.6), 0 0 0 1px var(--border);
+            overflow: hidden;
+            animation: slideUp .55s cubic-bezier(.16,1,.3,1) both;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(24px) scale(.985); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .terminal-header {
+            background-color: var(--panel-2);
+            padding: 12px 15px;
+            display: flex; align-items: center;
+            border-bottom: 1px solid var(--border);
+            position: relative; user-select: none;
+            position: sticky; top: 0; z-index: 20;
+        }
+        .tbtns { display: flex; gap: 8px; }
+        .tbtns span { width: 13px; height: 13px; border-radius: 50%; }
+        .b-close { background: #ff5f56; } .b-min { background: #ffbd2e; } .b-max { background: #27c93f; }
+        .terminal-title {
+            position: absolute; left: 50%; transform: translateX(-50%);
+            font-size: .82rem; color: var(--muted); pointer-events: none; white-space: nowrap;
+        }
+        .back-home {
+            margin-left: auto; font-size: .8rem; color: var(--muted);
+            display: inline-flex; align-items: center; gap: 6px; z-index: 21;
+        }
+        .back-home:hover { color: var(--bright); text-decoration: none; }
+
+        .terminal-body { padding: 30px 30px 10px; }
+
+        /* ===== prompt / command lines ===== */
+        .cmd {
+            display: flex; align-items: baseline; gap: 8px;
+            flex-wrap: wrap; margin: 0 0 14px;
+            font-size: .92rem;
+        }
+        .prompt { color: var(--green); font-weight: 600; white-space: nowrap; }
+        .prompt .path { color: var(--blue); font-weight: 600; }
+        .command { color: var(--cyan); }
+        .comment { color: var(--muted); }
+
+        /* ===== Hero ===== */
+        .hero { padding: 6px 0 30px; }
+        .hero h1 {
+            font-size: clamp(1.7rem, 5vw, 2.7rem);
+            color: var(--bright); font-weight: 700;
+            line-height: 1.15; letter-spacing: -.5px; margin: 18px 0 14px;
+        }
+        .hero h1 .accent { color: var(--green); }
+        .hero .lede { color: var(--muted); font-size: 1rem; max-width: 60ch; }
+        .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+        .pill {
+            font-size: .74rem; padding: 5px 12px; border-radius: 999px;
+            border: 1px solid var(--border); color: var(--muted);
+            background: rgba(255,255,255,.02); display: inline-flex; align-items: center; gap: 6px;
+        }
+        .pill i { font-size: .85rem; }
+        .pill.green { color: var(--green); border-color: rgba(126,231,135,.3); }
+        .pill.blue  { color: var(--blue);  border-color: rgba(88,166,255,.3); }
+        .pill.orange{ color: var(--orange);border-color: rgba(255,166,87,.3); }
+        .pill.purple{ color: var(--purple);border-color: rgba(210,168,255,.3); }
+
+        .cursor {
+            display: inline-block; width: 9px; height: 1.05em; background: var(--green);
+            animation: blink 1s step-end infinite; vertical-align: text-bottom; margin-left: 3px; border-radius: 1px;
+        }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+        /* ===== Section scaffolding ===== */
+        section { padding: 26px 0; border-top: 1px solid var(--border); }
+        section:first-of-type { border-top: 0; }
+        .sec-title { color: var(--bright); font-size: 1.05rem; font-weight: 600; margin: 6px 0 4px; }
+        .sec-lead { color: var(--muted); font-size: .9rem; margin-bottom: 18px; max-width: 70ch; }
+        p { margin-bottom: 14px; }
+        p .hl { color: var(--text); }
+        strong { color: var(--bright); font-weight: 600; }
+        code.inl { background: var(--panel-2); border: 1px solid var(--border); padding: 1px 6px; border-radius: 5px; color: var(--orange); font-size: .85em; }
+
+        /* reveal on scroll */
+        .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+        .reveal.visible { opacity: 1; transform: none; }
+
+        /* ===== Metric cards (incident) ===== */
+        .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin: 4px 0 18px; }
+        .metric {
+            background: linear-gradient(180deg, rgba(248,81,73,.06), rgba(248,81,73,.01));
+            border: 1px solid rgba(248,81,73,.3); border-radius: 10px; padding: 16px 18px;
+            position: relative; overflow: hidden;
+        }
+        .metric::after {
+            content: ''; position: absolute; inset: 0; pointer-events: none;
+            background: radial-gradient(120px 40px at 100% 0, rgba(248,81,73,.18), transparent 70%);
+        }
+        .metric .label { font-size: .72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+        .metric .vals { display: flex; align-items: baseline; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+        .metric .from { color: var(--muted); font-size: .95rem; text-decoration: line-through; text-decoration-color: rgba(139,148,158,.5); }
+        .metric .arrow { color: var(--muted); }
+        .metric .to { color: var(--red); font-size: 1.6rem; font-weight: 700; }
+        .metric .delta { margin-top: 6px; font-size: .76rem; color: var(--orange); }
+        .metric.ok { background: linear-gradient(180deg, rgba(63,185,80,.06), rgba(63,185,80,.01)); border-color: rgba(63,185,80,.3); }
+        .metric.ok::after { background: radial-gradient(120px 40px at 100% 0, rgba(63,185,80,.16), transparent 70%); }
+        .metric.ok .to { color: var(--success); }
+
+        /* ===== Log stream / timeline ===== */
+        .logstream {
+            background: #0b0e13; border: 1px solid var(--border); border-radius: 10px;
+            padding: 16px 18px; font-size: .85rem; overflow-x: auto;
+        }
+        .logrow { display: flex; gap: 14px; padding: 5px 0; white-space: nowrap; }
+        .logrow .ts { color: var(--green); flex-shrink: 0; }
+        .logrow .lv { flex-shrink: 0; width: 64px; font-weight: 600; }
+        .lv.info { color: var(--blue); } .lv.warn { color: var(--yellow); } .lv.crit { color: var(--danger); } .lv.ok { color: var(--success); }
+        .logrow .msg { color: var(--text); white-space: normal; }
+        .logrow.peak { background: rgba(248,81,73,.08); margin: 2px -10px; padding: 5px 10px; border-radius: 6px; }
+
+        /* ===== Code blocks ===== */
+        pre.code {
+            background: #0b0e13; border: 1px solid var(--border); border-radius: 10px;
+            padding: 16px 18px; overflow-x: auto; font-size: .85rem; line-height: 1.65; margin: 4px 0 16px;
+        }
+        .k-key{color:var(--purple);} .k-str{color:var(--cyan);} .k-fn{color:var(--blue);}
+        .k-kw{color:var(--red);} .k-num{color:var(--orange);} .k-com{color:var(--muted);} .k-punc{color:var(--bright);}
+
+        /* ===== Tables ===== */
+        .tbl-scroll { overflow-x: auto; margin: 4px 0 14px; border: 1px solid var(--border); border-radius: 10px; }
+        table { width: 100%; border-collapse: collapse; font-size: .84rem; min-width: 520px; }
+        thead th {
+            text-align: left; padding: 11px 14px; background: var(--panel-2);
+            color: var(--purple); font-weight: 600; border-bottom: 1px solid var(--border); white-space: nowrap;
+        }
+        tbody td { padding: 10px 14px; border-bottom: 1px solid rgba(48,54,61,.6); vertical-align: top; }
+        tbody tr:last-child td { border-bottom: 0; }
+        tbody tr:hover { background: rgba(88,166,255,.04); }
+        td .mono-em { color: var(--orange); }
+        .tag { font-size: .7rem; padding: 2px 8px; border-radius: 6px; border: 1px solid var(--border); color: var(--muted); white-space: nowrap; }
+        .tag.alta { color: var(--danger); border-color: rgba(248,81,73,.4); }
+        .tag.media{ color: var(--yellow); border-color: rgba(227,179,65,.4); }
+        .tag.baixa{ color: var(--blue); border-color: rgba(88,166,255,.4); }
+        tr.total td { background: rgba(126,231,135,.04); font-weight: 600; color: var(--bright); border-top: 1px solid var(--border); }
+
+        /* callout */
+        .callout {
+            border-left: 3px solid var(--blue); background: rgba(88,166,255,.05);
+            padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 4px 0 16px; font-size: .88rem;
+        }
+        .callout.warn { border-color: var(--yellow); background: rgba(227,179,65,.06); }
+        .callout.danger { border-color: var(--danger); background: rgba(248,81,73,.06); }
+        .callout strong { display: block; margin-bottom: 4px; }
+
+        /* error budget gauge */
+        .budget { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; margin: 6px 0 16px;
+            background: var(--panel-2); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; }
+        .gauge { --pct: 100; width: 104px; height: 104px; border-radius: 50%; flex-shrink: 0;
+            background: conic-gradient(var(--success) calc(var(--pct)*1%), var(--danger) 0);
+            display: grid; place-items: center; position: relative; }
+        .gauge::before { content: ''; position: absolute; inset: 9px; background: var(--panel-2); border-radius: 50%; }
+        .gauge .g-val { position: relative; font-size: 1.05rem; font-weight: 700; color: var(--bright); text-align: center; line-height: 1.1; }
+        .gauge .g-val small { display: block; font-size: .6rem; color: var(--muted); font-weight: 400; }
+        .budget .b-text h4 { color: var(--bright); font-size: .95rem; margin-bottom: 4px; }
+        .budget .b-text p { color: var(--muted); font-size: .85rem; margin: 0; }
+        .budget .b-text .big { color: var(--orange); font-weight: 600; }
+
+        /* two-column lists keep/improve */
+        .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 4px 0 14px; }
+        .col-card { background: var(--panel-2); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
+        .col-card h4 { font-size: .85rem; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+        .col-card.keep h4 { color: var(--success); }
+        .col-card.improve h4 { color: var(--orange); }
+        .col-card ul { list-style: none; }
+        .col-card li { font-size: .84rem; padding: 4px 0 4px 18px; position: relative; color: var(--text); }
+        .col-card li::before { content: '▹'; position: absolute; left: 0; color: var(--muted); }
+
+        /* evidence gallery */
+        .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; margin: 4px 0 8px; }
+        figure.shot { position: relative; margin: 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--panel-2); cursor: zoom-in; transition: transform .25s, border-color .25s, box-shadow .25s; }
+        figure.shot:hover { transform: translateY(-3px); border-color: var(--blue); box-shadow: 0 12px 34px rgba(0,0,0,.45); }
+        figure.shot img { width: 100%; height: 150px; object-fit: cover; object-position: top left; display: block; border-bottom: 1px solid var(--border); transition: transform .45s cubic-bezier(.16,1,.3,1); }
+        figure.shot:hover img { transform: scale(1.08); }
+        figure.shot figcaption { padding: 10px 12px; font-size: .76rem; color: var(--muted); line-height: 1.45; position: relative; background: var(--panel-2); }
+        figure.shot figcaption b { color: var(--cyan); font-weight: 600; }
+        .zoom-badge {
+            position: absolute; top: 8px; right: 8px; width: 28px; height: 28px;
+            display: grid; place-items: center; border-radius: 7px;
+            background: rgba(13,17,23,.72); border: 1px solid var(--border);
+            color: var(--cyan); font-size: .9rem; backdrop-filter: blur(2px);
+            opacity: 0; transform: scale(.8); transition: opacity .25s, transform .25s; pointer-events: none; z-index: 2;
+        }
+        figure.shot:hover .zoom-badge { opacity: 1; transform: scale(1); }
+
+        /* lightbox — zoom FLIP */
+        .lightbox {
+            position: fixed; inset: 0; background: rgba(1,4,9,.9); backdrop-filter: blur(7px);
+            display: grid; place-items: center; z-index: 100; padding: 24px; cursor: zoom-out;
+            opacity: 0; visibility: hidden; transition: opacity .32s ease, visibility .32s;
+        }
+        .lightbox.on { opacity: 1; visibility: visible; }
+        .lightbox img { max-width: 100%; max-height: 86vh; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 30px 80px rgba(0,0,0,.7); transform-origin: top left; will-change: transform, opacity; }
+        .lightbox .lb-cap { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); color: var(--text); font-size: .82rem; background: var(--panel); padding: 7px 16px; border-radius: 8px; border: 1px solid var(--border); max-width: 86vw; text-align: center; opacity: 0; transition: opacity .3s ease .15s; }
+        .lightbox.on .lb-cap { opacity: 1; }
+        .lb-nav {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            width: 46px; height: 46px; border-radius: 50%; cursor: pointer;
+            background: rgba(22,27,34,.82); border: 1px solid var(--border); color: var(--text);
+            font-size: 1.3rem; display: grid; place-items: center; backdrop-filter: blur(4px);
+            transition: color .2s, border-color .2s, background .2s, transform .2s; z-index: 3;
+        }
+        .lb-nav:hover { color: var(--bright); border-color: var(--blue); background: rgba(88,166,255,.16); }
+        .lb-nav:active { transform: translateY(-50%) scale(.92); }
+        .lb-prev { left: 18px; } .lb-next { right: 18px; }
+        .lb-count {
+            position: absolute; top: 18px; left: 50%; transform: translateX(-50%);
+            color: var(--muted); font-size: .76rem; letter-spacing: .04em;
+            background: var(--panel); padding: 5px 13px; border-radius: 999px; border: 1px solid var(--border);
+            opacity: 0; transition: opacity .3s ease .1s; z-index: 3;
+        }
+        .lightbox.on .lb-count { opacity: 1; }
+        @media (max-width: 680px) {
+            .lb-nav { width: 40px; height: 40px; font-size: 1.1rem; }
+            .lb-prev { left: 8px; } .lb-next { right: 8px; }
+        }
+
+        /* ADR cards */
+        .adrs { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; }
+        .adr { background: var(--panel-2); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
+        .adr .adr-id { font-size: .72rem; color: var(--purple); letter-spacing: .05em; }
+        .adr h4 { font-size: .9rem; color: var(--bright); margin: 6px 0 8px; line-height: 1.3; }
+        .adr p { font-size: .82rem; color: var(--muted); margin: 0; }
+        .adr .status { display: inline-block; margin-top: 10px; font-size: .68rem; color: var(--success); border: 1px solid rgba(63,185,80,.4); border-radius: 6px; padding: 2px 8px; }
+
+        /* numbered steps */
+        .steps { counter-reset: step; display: grid; gap: 12px; margin: 4px 0 8px; }
+        .step { display: flex; gap: 14px; align-items: flex-start; }
+        .step .n { counter-increment: step; flex-shrink: 0; width: 28px; height: 28px; border-radius: 8px; background: var(--panel-2); border: 1px solid var(--border); color: var(--green); display: grid; place-items: center; font-size: .8rem; font-weight: 600; }
+        .step .n::before { content: counter(step); }
+        .step .s-body h4 { font-size: .88rem; color: var(--bright); margin-bottom: 2px; }
+        .step .s-body p { font-size: .83rem; color: var(--muted); margin: 0; }
+
+        /* CTA / footer */
+        .cta { display: flex; flex-wrap: wrap; gap: 12px; margin: 8px 0 4px; }
+        .btn {
+            display: inline-flex; align-items: center; gap: 9px; padding: 11px 20px;
+            border: 1px solid var(--border); border-radius: 8px; color: var(--text);
+            font-size: .85rem; transition: all .22s; background: rgba(255,255,255,.02);
+        }
+        .btn:hover { color: var(--bright); border-color: var(--blue); background: rgba(88,166,255,.08); transform: translateY(-2px); text-decoration: none; }
+        .btn.primary { border-color: rgba(126,231,135,.4); color: var(--green); }
+        .btn.primary:hover { border-color: var(--green); background: rgba(126,231,135,.08); color: var(--green); }
+        .btn i { font-size: 1rem; }
+
+        .disclaimer { font-size: .76rem; color: var(--muted); border: 1px dashed var(--border); border-radius: 8px; padding: 12px 16px; margin: 18px 0 4px; }
+        .disclaimer i { color: var(--yellow); }
+
+        footer.page-foot {
+            text-align: center; color: var(--muted); font-size: .78rem;
+            padding: 26px 0 6px; border-top: 1px solid var(--border); margin-top: 8px;
+        }
+        footer.page-foot a { color: var(--muted); }
+        footer.page-foot a:hover { color: var(--bright); }
+
+        /* responsive */
+        @media (max-width: 680px) {
+            body { padding: 10px; }
+            .terminal-body { padding: 20px 16px 6px; }
+            .terminal-title { display: none; }
+            .cols { grid-template-columns: 1fr; }
+            .metric .to { font-size: 1.4rem; }
+            .logstream { font-size: .78rem; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .reveal { opacity: 1; transform: none; transition: none; }
+            .cursor { animation: none; }
+            html { scroll-behavior: auto; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="wrap">
+        <main class="terminal" role="main">
+
+            <!-- chrome -->
+            <div class="terminal-header">
+                <div class="tbtns" aria-hidden="true"><span class="b-close"></span><span class="b-min"></span><span class="b-max"></span></div>
+                <div class="terminal-title">user@luiscruz: ~/case-sre</div>
+                <a class="back-home" href="../"><i class="bi bi-arrow-left"></i> home</a>
+            </div>
+
+            <div class="terminal-body">
+
+                <!-- ===== HERO ===== -->
+                <div class="hero">
+                    <div class="cmd">
+                        <span class="prompt">user@luiscruz:<span class="path">~/case-sre</span>$</span>
+                        <span class="command" id="boot"></span><span class="cursor" id="boot-cursor"></span>
+                    </div>
+                    <div id="hero-content" hidden>
+                        <h1>Da degradação de latência à <span class="accent">observabilidade orientada por SLO</span></h1>
+                        <p class="lede">Case study de SRE: uma API que saiu de ~200ms para 5s em produção numa sexta 18h. Resposta a incidente, postmortem blameless, definição de SLIs/SLOs, estratégia de observabilidade com OpenTelemetry e análise de custo (FinOps), do diagnóstico à prevenção.</p>
+                        <div class="pills">
+                            <span class="pill green"><i class="bi bi-graph-up-arrow"></i> SLOs &amp; Error Budget</span>
+                            <span class="pill blue"><i class="bi bi-diagram-3"></i> OpenTelemetry</span>
+                            <span class="pill orange"><i class="bi bi-fire"></i> Incident Response</span>
+                            <span class="pill purple"><i class="bi bi-cash-coin"></i> FinOps</span>
+                            <span class="pill"><i class="bi bi-bar-chart"></i> Prometheus · Grafana · Loki</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== 1. CONTEXTO ===== -->
+                <section class="reveal">
+                    <div class="cmd"><span class="prompt">$</span> <span class="command">cat 00-contexto.md</span></div>
+                    <h2 class="sec-title">O cenário</h2>
+                    <p class="sec-lead">Sexta-feira, 18h. Pico de tráfego, time reduzido, deploy recente: o momento clássico em que um incidente nasce.</p>
+                    <p>A latência da API subiu de <strong>~200ms para 5s</strong>. O Sentry começou a registrar timeouts em volume e clientes já reclamavam. O staging seguia normal, e havia um <strong>deploy às 17h30</strong>. O ambiente roda em Kubernetes (AKS) com C# e Python, instrumentado com Prometheus, Grafana e Loki; tracing distribuído ainda não estava pronto.</p>
+                    <p>A pergunta de SRE não é "qual a causa raiz definitiva?", e sim: <span class="hl">como reduzir impacto, organizar comunicação e preservar evidência. Primeiro restaurar, depois investigar.</span></p>
+                </section>
+
+                <!-- ===== 2. INCIDENTE ===== -->
+                <section class="reveal">
+                    <div class="cmd"><span class="prompt">$</span> <span class="command">cat 01-incidente.json</span> <span class="comment"># estado no pico, 17:45</span></div>
+                    <h2 class="sec-title">O impacto, em números</h2>
+                    <p class="sec-lead">Antes → depois do deploy. O serviço respondia health check enquanto a experiência real degradava.</p>
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="label">Latência P95</div>
+                            <div class="vals"><span class="from">220ms</span><span class="arrow">→</span><span class="to">5.200ms</span></div>
+                            <div class="delta">▲ ~24× acima do baseline</div>
+                        </div>
+                        <div class="metric">
+                            <div class="label">Latência P99</div>
+                            <div class="vals"><span class="to">9.000ms</span></div>
+                            <div class="delta">▲ cauda longa de timeouts</div>
+                        </div>
+                        <div class="metric">
+                            <div class="label">Taxa de erro</div>
+                            <div class="vals"><span class="from">0,3%</span><span class="arrow">→</span><span class="to">6,0%</span></div>
+                            <div class="delta">▲ 20× · 5xx e timeouts</div>
+                        </div>
+                        <div class="metric">
+                            <div class="label">Error budget (99,5%)</div>
+                            <div class="vals"><span class="to">3h36</span></div>
+                            <div class="delta">▲ consumido de forma acelerada</div>
+                        </div>
+                    </div>
+                    <div class="callout danger">
+                        <strong><i class="bi bi-exclamation-triangle"></i> Sinal que importa</strong>
+                        Disponibilidade HTTP sozinha não capturaria isto. O que conta é a experiência percebida: latência de cauda (P95/P99) e taxa de erro.
+                    </div>
+                </section>
+
+                <!-- ===== 3. TIMELINE ===== -->
+                <section class="reveal">
+                    <div class="cmd"><span class="prompt">$</span> <span class="command">tail -f incident.log</span></div>
+                    <h2 class="sec-title">Timeline do incidente</h2>
+                    <p class="sec-lead">Correlação temporal forte com o deploy das 17h30: pista para reduzir o espaço de investigação.</p>
+                    <div class="logstream">
+                        <div class="logrow"><span class="ts">17:20</span><span class="lv info">INFO</span><span class="msg">Baseline saudável: P95 180ms, erro 0,2%</span></div>
+                        <div class="logrow"><span class="ts">17:30</span><span class="lv warn">DEPLOY</span><span class="msg">Nova versão publicada em produção</span></div>
+                        <div class="logrow"><span class="ts">17:35</span><span class="lv warn">WARN</span><span class="msg">P95 sobe para 900ms, P99 para 1.800ms</span></div>
+                        <div class="logrow"><span class="ts">17:36</span><span class="lv warn">WARN</span><span class="msg">Postgres registra queries &gt; 2.600ms filtrando por <code class="inl">account_id</code></span></div>
+                        <div class="logrow"><span class="ts">17:40</span><span class="lv crit">CRIT</span><span class="msg">P95 1.800ms, erros em 2,5%</span></div>
+                        <div class="logrow peak"><span class="ts">17:45</span><span class="lv crit">CRIT</span><span class="msg">Pico: P95 5.200ms, P99 9.000ms, erros 6,0%</span></div>
+                        <div class="logrow"><span class="ts">17:50</span><span class="lv crit">CRIT</span><span class="msg">Degradação sustentada: P95 4.800ms, erro 5,5%</span></div>
+                        <div class="logrow"><span class="ts">18:00</span><span class="lv ok">ACTION</span><span class="msg">Tratado como impacto em cliente: rollback/mitigação priorizados</span></div>
+                    </div>
+                    <p>Critério de rollback foi objetivo, não intuitivo: P95/P99 acima do SLO por duas janelas consecutivas, aumento de 5xx pós-deploy, clientes confirmando impacto, sem mitigação simples em 15 min, ou correlação temporal forte com o deploy.</p>
+                </section>
+
+                <!-- ===== 4. CAUSA RAIZ ===== -->
+                <section class="reveal">
+                    <div class="cmd"><span class="prompt">$</span> <span class="command">cat 02-causa-raiz.sql</span></div>
+                    <h2 class="sec-title">Causa raiz: N+1 + índice ausente</h2>
+                    <p class="sec-lead">Para cada item processado, a aplicação disparava uma consulta adicional contra <code class="inl">users</code>. O log de slow queries mostrou o padrão:</p>
+<pre class="code"><span class="k-com">-- repetida 1× por item, 2.500ms–5.100ms cada</span>
+<span class="k-kw">SELECT</span> <span class="k-punc">*</span> <span class="k-kw">FROM</span> users u <span class="k-kw">WHERE</span> u.account_id <span class="k-punc">=</span> <span class="k-num">$1</span><span class="k-punc">;</span>
+<span class="k-com">-- sem índice em account_id → full scan sob carga real</span></pre>
+                    <div class="callout warn">
+                        <strong><i class="bi bi-lightbulb"></i> A distinção que pega em entrevista</strong>
+                        O índice em <code class="inl">account_id</code> <em>não</em> resolve o N+1 sozinho. N+1 é problema de <strong>quantidade</strong> de consultas; o índice reduz o <strong>custo de cada</strong> consulta. A correção definitiva remove o padrão (batch, join ou eager loading); o índice entra como melhoria complementar.
+                    </div>
+                    <p><strong>Por que passou no staging?</strong> O ambiente não reproduzia volume, cardinalidade e concorrência de produção. A query parecia aceitável em baixa escala e degradou sob dados reais. Teste funcional passa, comportamento operacional falha.</p>
+                </section>
+
+                <!-- ===== 5. SLOs ===== -->
+                <section class="reveal">
+                    <div class="cmd"><span class="prompt">$</span> <span class="command">cat 03-slo.yaml</span></div>
+                    <h2 class="sec-title">SLIs, SLOs e error budget</h2>
+                    <p class="sec-lead">Dois pilotos cobrem os dois tipos de experiência: resposta síncrona (API C#) e conclusão de trabalho assíncrono (Core Processor em Python).</p>
+
+                    <div class="tbl-scroll">
+                        <table>
+                            <thead><tr><th>SLI</th><th>Como medir</th><th>SLO inicial</th></tr></thead>
+                            <tbody>
+                                <tr><td>Disponibilidade HTTP</td><td>Requests não-5xx / total</td><td><span class="mono-em">99,5%</span> /mês</td></tr>
+                                <tr><td>Latência P95</td><td>Duração das requisições</td><td>&lt; <span class="mono-em">500ms</span> (janela 5m)</td></tr>
+                                <tr><td>Taxa de erro 5xx</td><td>5xx / total de requests</td><td>&lt; <span class="mono-em">1%</span> /mês</td></tr>
+                                <tr><td>Backlog da fila <code class="inl">jobs</code></td><td>Mensagens prontas na fila</td><td>&lt; <span class="mono-em">1.000</span> por &gt;10min</td></tr>
+                                <tr><td>Idade da mensagem</td><td>Espera da msg mais antiga</td><td>P95 &lt; <span class="mono-em">5min</span></td></tr>
+                                <tr><td>Taxa de ACK</td><td>Processadas com ACK / consumidas</td><td><span class="mono-em">99%</span> /mês</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="budget">
+                        <div class="gauge" style="--pct: 88;"><span class="g-val">3h36<small>budget / mês</small></span></div>
+                        <div class="b-text">
+                            <h4>Error budget = 0,5% de 720h</h4>
+                            <p>Um SLO de <span class="big">99,5%/mês</span> tolera ~<span class="big">3h36min</span> de erro ou indisponibilidade. Não é permissão para falhar. É o limite que dispara decisão: se o consumo acelera, reduz-se risco de mudança (congelamento de deploys não críticos, rollback mais agressivo, priorização de confiabilidade).</p>
+                        </div>
+                    </div>
+
+                    <p><strong>Alertas multi-window, multi-burn-rate</strong> combinam janelas curtas e longas para o mesmo SLO, evitando tanto o alarme por pico isolado quanto a cegueira para degradação lenta:</p>
+                    <div class="tbl-scroll">
+                        <table>
+                            <thead><tr><th>Severidade</th><th>Janelas</th><th>Sinal</th><th>Ação</th></tr></thead>
+                            <tbody>
+                                <tr><td><span class="tag alta">Alta</span></td><td>5m + 1h</td><td>Consumo acelerado do budget</td><td>Acionar on-call</td></tr>
+                                <tr><td><span class="tag media">Média</span></td><td>30m + 6h</td><td>Degradação sustentada</td><td>Investigar em horário comercial</td></tr>
+                                <tr><td><span class="tag baixa">Baixa</span></td><td>24h</td><td>Tendência acima do esperado</td><td>Revisar capacidade / regressões</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="sec-lead" style="margin-bottom:6px">SLI de disponibilidade em PromQL (roda na stack via <code class="inl">prometheus-net</code>):</p>
+<pre class="code"><span class="k-fn">sum</span>(<span class="k-fn">rate</span>(http_requests_received_total{job<span class="k-punc">=</span><span class="k-str">"csharp-api"</span>, code<span class="k-punc">!~</span><span class="k-str">"5.."</span>}[<span class="k-num">5m</span>]))
+<span class="k-punc">/</span>
+<span class="k-fn">sum</span>(<span class="k-fn">rate</span>(http_requests_received_total{job<span class="k-punc">=</span><span class="k-str">"csharp-api"</span>}[<span class="k-num">5m</span>]))</pre>
+                </section>
+
+                <!-- ===== 6. OBSERVABILIDADE ===== -->
+                <section class="reveal">
+                    <div class="cmd"><span class="prompt">$</span> <span class="command">cat 04-observabilidade.md</span></div>
+                    <h2 class="sec-title">Estratégia de observabilidade</h2>
+                    <p class="sec-lead">Maturar a base existente antes de adicionar ferramentas. Melhorar a qualidade do sinal antes da quantidade de dashboards.</p>
+                    <div class="cols">
+                        <div class="col-card keep">
+                            <h4><i class="bi bi-check-circle"></i> O que manter</h4>
+                            <ul>
+                                <li>Prometheus para métricas operacionais e SLIs</li>
+                                <li>Grafana como ponto central de visualização</li>
+                                <li>Loki para logs estruturados (já via Promtail)</li>
+                                <li>OpenTelemetry como padrão de instrumentação</li>
+                            </ul>
+                        </div>
+                        <div class="col-card improve">
+                            <h4><i class="bi bi-wrench-adjustable"></i> O que melhorar</h4>
+                            <ul>
+                                <li>Padronizar labels e correlação request_id ↔ logs ↔ traces</li>
+                                <li>Dashboards por serviço (4 sinais de ouro)</li>
+                                <li>Alertas por burn rate, não por métrica técnica isolada</li>
+                                <li>Controlar cardinalidade (cuidado com label <code class="inl">path</code>)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="callout">
+                        <strong><i class="bi bi-diagram-3"></i> O gap do tracing</strong>
+                        O OTel Collector sobe e abre OTLP em 4317/4318, mas exporta apenas para <code class="inl">debug</code>, sem backend de traces nem datasource no Grafana. Existe base de instrumentação, falta capacidade de investigação ponta a ponta. Evolução em fases, começando por endpoints críticos e com sampling desde o início.
+                    </div>
+                </section>
+
+                <!-- ===== 7. APM ===== -->
+                <section class="reveal">
+                    <div class="cmd"><span class="prompt">$</span> <span class="command">./apm-recommendation.sh</span></div>
+                    <h2 class="sec-title">APM &amp; tracing: a decisão</h2>
+                    <p class="sec-lead">OpenTelemetry como camada neutra reduz lock-in e permite trocar o backend sem reinstrumentar C# e Python.</p>
+                    <div class="tbl-scroll">
+                        <table>
+                            <thead><tr><th>Opção</th><th>Pontos fortes</th><th>Riscos / limitações</th></tr></thead>
+                            <tbody>
+                                <tr><td><strong>Datadog</strong></td><td>Experiência operacional pronta, ótima correlação</td><td>Custo cresce rápido (hosts, ingestão, APM); exige governança</td></tr>
+                                <tr><td><strong>New Relic</strong></td><td>Boa cobertura de APM e dashboards</td><td>Modelo de custo por usuário/ingestão; menos controle sem OTel</td></tr>
+                                <tr><td><strong>Dynatrace</strong></td><td>Forte em enterprise, automação de dependências</td><td>Pesado e caro para um estágio inicial</td></tr>
+                                <tr><td><strong>OSS: Tempo/Jaeger + OTel</strong></td><td>Menor lock-in, encaixe com Grafana existente</td><td>Mais responsabilidade operacional (storage, retenção, escala)</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="callout">
+                        <strong><i class="bi bi-stars"></i> Recomendação</strong>
+                        Manter OpenTelemetry como padrão obrigatório e rodar um piloto com <strong>Grafana Tempo</strong> (ou Grafana Cloud Traces): aproveita o que já existe, reduz mudança operacional e mantém liberdade de trocar de backend. Datadog entraria se a prioridade fosse velocidade de adoção, com limites de ingestão, retenção e sampling desde o primeiro mês.
+                    </div>
+                </section>
+
+                <!-- ===== 8. CUSTO ===== -->
+                <section class="reveal">
+                    <div class="cmd"><span class="prompt">$</span> <span class="command">cat 05-custo.csv</span> <span class="comment"># valores estimados</span></div>
+                    <h2 class="sec-title">Análise de custo (FinOps)</h2>
+                    <p class="sec-lead">Self-hosted no AKS. Premissas: ~50 req/s em pico, ~10 GB de logs/dia, ~50k séries ativas, sampling de traces 100% em erros e ~10% no tráfego normal.</p>
+                    <div class="tbl-scroll">
+                        <table>
+                            <thead><tr><th>Item</th><th>Atual (US$/mês)</th><th>Proposto (US$/mês)</th></tr></thead>
+                            <tbody>
+                                <tr><td>Compute do stack de monitoramento</td><td>150</td><td>180</td></tr>
+                                <tr><td>Storage de métricas (Prometheus TSDB)</td><td>20</td><td>25</td></tr>
+                                <tr><td>Storage de logs (Loki + object storage)</td><td>30</td><td>30</td></tr>
+                                <tr><td>Backend de tracing (Tempo + storage)</td><td>0</td><td><span class="mono-em">90</span></td></tr>
+                                <tr><td>Rede egress e backup</td><td>15</td><td>20</td></tr>
+                                <tr class="total"><td>TOTAL estimado</td><td>US$ 215</td><td>US$ 345</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="callout warn">
+                        <strong><i class="bi bi-cash-stack"></i> Delta: +US$ 130/mês (+60%)</strong>
+                        Quase todo o aumento é o backend de tracing, o item que falta para investigação ponta a ponta. Custo controlado por sampling.
+                    </div>
+                    <p><strong>Alavancas de redução</strong> sem perder visibilidade:</p>
+                    <div class="tbl-scroll">
+                        <table>
+                            <thead><tr><th>Alavanca</th><th>Impacto</th><th>Como controlar</th></tr></thead>
+                            <tbody>
+                                <tr><td>Retenção por criticidade</td><td>Menos storage de logs</td><td>Definir quais eventos exigem retenção estendida</td></tr>
+                                <tr><td>Sampling de traces</td><td>Menos ingestão</td><td>100% em erros/lentidão; amostrar tráfego normal por serviço</td></tr>
+                                <tr><td>Controle de cardinalidade</td><td>Menos séries de métricas</td><td>Detalhe fino em logs/traces; métricas para agregados</td></tr>
+                                <tr><td>Filtro de logs ruidosos</td><td>Menos ingestão e ruído</td><td>Validar filtros em piloto antes de produção</td></tr>
+                                <tr><td>Alertas por SLO</td><td>Menos toil e fadiga</td><td>Burn rate aciona on-call; métrica técnica vira contexto</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- ===== 9. EVIDÊNCIAS ===== -->
+                <section class="reveal">
+                    <div class="cmd"><span class="prompt">$</span> <span class="command">ls ./evidencias/</span></div>
+                    <h2 class="sec-title">Evidências da validação local</h2>
+                    <p class="sec-lead">A stack foi provisionada e validada localmente antes de qualquer recomendação. Clique para ampliar.</p>
+                    <div class="gallery">
+                        <figure class="shot"><img src="img/prometheus-targets-up.png" alt="Prometheus com targets UP" loading="lazy"><figcaption><b>Prometheus</b>: targets UP coletando métricas das duas APIs</figcaption></figure>
+                        <figure class="shot"><img src="img/grafana-loki-csharp-logs.png" alt="Grafana consultando logs da API C# no Loki" loading="lazy"><figcaption><b>Grafana / Loki</b>: logs estruturados da API C#</figcaption></figure>
+                        <figure class="shot"><img src="img/grafana-loki-python-logs.png" alt="Grafana consultando logs do Core Processor Python no Loki" loading="lazy"><figcaption><b>Grafana / Loki</b>: logs do Core Processor (Python)</figcaption></figure>
+                        <figure class="shot"><img src="img/rabbitmq-jobs-queue.png" alt="RabbitMQ com a fila jobs" loading="lazy"><figcaption><b>RabbitMQ</b>: fila <code class="inl">jobs</code> operacional</figcaption></figure>
+                        <figure class="shot"><img src="img/otel-collector-debug-exporter.png" alt="OTel Collector ativo com exporter debug" loading="lazy"><figcaption><b>OTel Collector</b>: ativo em 4317/4318, exporter apenas <code class="inl">debug</code> (sem backend de traces)</figcaption></figure>
+                    </div>
+                </section>
+
+                <!-- ===== 10. ADRs ===== -->
+                <section class="reveal">
+                    <div class="cmd"><span class="prompt">$</span> <span class="command">ls ./adrs/</span></div>
+                    <h2 class="sec-title">Decisões arquiteturais (ADRs)</h2>
+                    <p class="sec-lead">Decisões registradas com contexto, opções e consequências.</p>
+                    <div class="adrs">
+                        <div class="adr">
+                            <span class="adr-id">ADR-001</span>
+                            <h4>Alertas baseados em SLO e burn rate</h4>
+                            <p>Diferenciar sintoma com impacto real de sinal de diagnóstico. Métricas técnicas viram contexto em dashboard, não página.</p>
+                            <span class="status">Accepted</span>
+                        </div>
+                        <div class="adr">
+                            <span class="adr-id">ADR-002</span>
+                            <h4>OpenTelemetry como padrão para APM e tracing</h4>
+                            <p>Camada neutra para trocar o backend sem reinstrumentar. Cuidado com sampling, atributos obrigatórios e governança de custo.</p>
+                            <span class="status">Accepted</span>
+                        </div>
+                        <div class="adr">
+                            <span class="adr-id">ADR-003</span>
+                            <h4>Retenção de logs e controle de cardinalidade</h4>
+                            <p>Retenção curta para logs brutos; estendida só para eventos críticos. Controlar labels de alta cardinalidade no Loki.</p>
+                            <span class="status">Accepted</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===== 11. LIÇÕES / PREVENÇÃO ===== -->
+                <section class="reveal">
+                    <div class="cmd"><span class="prompt">$</span> <span class="command">cat 06-prevencao.md</span></div>
+                    <h2 class="sec-title">Prevenção de recorrência</h2>
+                    <p class="sec-lead">A falha não foi de uma pessoa, e sim de lacunas no sistema de entrega. Tratar performance e observabilidade como parte do contrato de produção, não como validação posterior ao deploy.</p>
+                    <div class="steps">
+                        <div class="step"><span class="n"></span><div class="s-body"><h4>Detecção mais cedo</h4><p>Alertas baseados em SLO e burn rate para latência e erro da API.</p></div></div>
+                        <div class="step"><span class="n"></span><div class="s-body"><h4>Prevenção na entrega</h4><p>Gate de performance na pipeline e revisão explícita de queries (risco de N+1) no checklist de PR.</p></div></div>
+                        <div class="step"><span class="n"></span><div class="s-body"><h4>Diagnóstico mais rápido</h4><p>Tracing funcional com OpenTelemetry, correlacionando endpoint, chamada de banco e tempo por dependência.</p></div></div>
+                        <div class="step"><span class="n"></span><div class="s-body"><h4>Deploy mais seguro</h4><p>Rollout progressivo (canary/blue-green) e feature flags para desligar comportamento novo sem rollback completo.</p></div></div>
+                        <div class="step"><span class="n"></span><div class="s-body"><h4>Staging representativo</h4><p>Revisar massa de dados para refletir volume e cardinalidade reais.</p></div></div>
+                    </div>
+                </section>
+
+                <!-- ===== CTA ===== -->
+                <section class="reveal">
+                    <div class="cmd"><span class="prompt">$</span> <span class="command">ls -la ./links</span></div>
+                    <div class="cta">
+                        <a class="btn primary" id="repo-link" href="https://github.com/luiscruzcwb" target="_blank" rel="noopener"><i class="bi bi-github"></i> Repositório do desafio</a>
+                        <a class="btn" href="https://www.linkedin.com/in/luiscruzcwb/" target="_blank" rel="noopener"><i class="bi bi-linkedin"></i> LinkedIn</a>
+                        <a class="btn" href="../"><i class="bi bi-house"></i> Voltar ao início</a>
+                    </div>
+                    <div class="disclaimer">
+                        <i class="bi bi-info-circle"></i> <strong>Nota de transparência:</strong> dados de slow query e de fila vêm dos logs/cenários fornecidos no desafio. As métricas do incidente (P95/P99, taxas de erro e a timeline minuto a minuto) são ilustrativas, coerentes com o cenário (latência de ~200ms para ~5s); os valores de custo são estimativas sobre premissas de volume, a calibrar com dados reais do ambiente.
+                    </div>
+                </section>
+
+                <footer class="page-foot">
+                    <span class="prompt">user@luiscruz:~/case-sre$</span> exit &nbsp;·&nbsp; Luis Cruz · DevOps &amp; SRE &nbsp;·&nbsp; <a href="../">luiscruz.com.br</a>
+                </footer>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- lightbox -->
+    <div class="lightbox" id="lightbox" aria-hidden="true">
+        <button class="lb-nav lb-prev" id="lb-prev" type="button" aria-label="Imagem anterior"><i class="bi bi-chevron-left"></i></button>
+        <img src="" alt="" id="lb-img">
+        <button class="lb-nav lb-next" id="lb-next" type="button" aria-label="Próxima imagem"><i class="bi bi-chevron-right"></i></button>
+        <span class="lb-count" id="lb-count"></span>
+        <span class="lb-cap" id="lb-cap"></span>
+    </div>
+
+    <script>
+        // ===== hero boot typing =====
+        const bootEl = document.getElementById('boot');
+        const bootCursor = document.getElementById('boot-cursor');
+        const heroContent = document.getElementById('hero-content');
+        const bootText = './run-incident-postmortem.sh --case sre';
+
+        function type(el, text, speed, done) {
+            let i = 0;
+            (function tick() {
+                if (i < text.length) { el.textContent += text[i++]; setTimeout(tick, speed + Math.random() * 22); }
+                else if (done) done();
+            })();
+        }
+
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduceMotion) {
+            bootEl.textContent = bootText;
+            bootCursor.style.display = 'none';
+            heroContent.removeAttribute('hidden');
+        } else {
+            setTimeout(() => type(bootEl, bootText, 46, () => {
+                setTimeout(() => {
+                    heroContent.removeAttribute('hidden');
+                    heroContent.style.animation = 'slideUp .5s ease both';
+                    bootCursor.style.display = 'none';
+                }, 280);
+            }), 500);
+        }
+
+        // ===== scroll reveal =====
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+        }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+        document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+        // ===== lightbox + FLIP zoom + navegação =====
+        const lb = document.getElementById('lightbox');
+        const lbImg = document.getElementById('lb-img');
+        const lbCap = document.getElementById('lb-cap');
+        const lbCount = document.getElementById('lb-count');
+        const shots = Array.from(document.querySelectorAll('figure.shot'));
+        let currentIndex = 0;
+        let activeThumb = null;
+
+        shots.forEach(fig => {
+            const badge = document.createElement('span');
+            badge.className = 'zoom-badge';
+            badge.innerHTML = '<i class="bi bi-zoom-in"></i>';
+            fig.appendChild(badge);
+            fig.addEventListener('click', () => openLightbox(fig));
+        });
+
+        function setContent(i) {
+            const fig = shots[i];
+            const img = fig.querySelector('img');
+            activeThumb = img;
+            lbImg.src = img.src;
+            lbImg.alt = img.alt;
+            lbCap.textContent = fig.querySelector('figcaption').textContent;
+            lbCount.textContent = (i + 1) + ' / ' + shots.length;
+        }
+
+        function openLightbox(fig) {
+            currentIndex = shots.indexOf(fig);
+            setContent(currentIndex);
+            lb.classList.add('on');
+            lb.setAttribute('aria-hidden', 'false');
+            if (reduceMotion) return;
+            // FLIP: anima a partir do retângulo da miniatura até o centro
+            const first = fig.querySelector('img').getBoundingClientRect();
+            const last = lbImg.getBoundingClientRect();
+            if (!last.width || !last.height) return;
+            const dx = first.left - last.left, dy = first.top - last.top;
+            const sx = first.width / last.width, sy = first.height / last.height;
+            lbImg.animate([
+                { transform: `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`, opacity: .35 },
+                { transform: 'translate(0, 0) scale(1, 1)', opacity: 1 }
+            ], { duration: 360, easing: 'cubic-bezier(.16, 1, .3, 1)' });
+        }
+
+        function navigate(dir) {
+            const n = shots.length;
+            currentIndex = (currentIndex + dir + n) % n;
+            setContent(currentIndex);
+            if (reduceMotion) return;
+            // slide na direção da navegação
+            lbImg.animate([
+                { transform: `translateX(${dir * 42}px)`, opacity: 0 },
+                { transform: 'translateX(0)', opacity: 1 }
+            ], { duration: 280, easing: 'cubic-bezier(.16, 1, .3, 1)' });
+        }
+
+        function closeLightbox() {
+            if (!lb.classList.contains('on')) return;
+            const img = activeThumb;
+            lb.setAttribute('aria-hidden', 'true');
+            if (reduceMotion || !img) { lb.classList.remove('on'); return; }
+            // FLIP reverso: encolhe de volta para a miniatura atual
+            const first = lbImg.getBoundingClientRect();
+            const last = img.getBoundingClientRect();
+            const dx = last.left - first.left, dy = last.top - first.top;
+            const sx = last.width / first.width, sy = last.height / first.height;
+            lb.classList.remove('on');
+            lbImg.animate([
+                { transform: 'translate(0, 0) scale(1, 1)', opacity: 1 },
+                { transform: `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`, opacity: .2 }
+            ], { duration: 300, easing: 'cubic-bezier(.4, 0, .2, 1)' });
+        }
+
+        document.getElementById('lb-prev').addEventListener('click', e => { e.stopPropagation(); navigate(-1); });
+        document.getElementById('lb-next').addEventListener('click', e => { e.stopPropagation(); navigate(1); });
+        lb.addEventListener('click', closeLightbox);
+        document.addEventListener('keydown', e => {
+            if (!lb.classList.contains('on')) return;
+            if (e.key === 'Escape') closeLightbox();
+            else if (e.key === 'ArrowRight') navigate(1);
+            else if (e.key === 'ArrowLeft') navigate(-1);
+        });
+    </script>
+
+</body>
+</html>
