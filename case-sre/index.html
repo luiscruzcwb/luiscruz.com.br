@@ -328,6 +328,11 @@
         .disclaimer { font-size: .76rem; color: var(--muted); border: 1px dashed var(--border); border-radius: 8px; padding: 12px 16px; margin: 18px 0 4px; }
         .disclaimer i { color: var(--yellow); }
 
+        /* embedded PDF viewer */
+        .pdf-frame { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--panel-2); aspect-ratio: 16 / 9; box-shadow: 0 12px 34px rgba(0,0,0,.35); }
+        .pdf-frame iframe { width: 100%; height: 100%; border: 0; display: block; }
+        @media (max-width: 680px) { .pdf-frame { aspect-ratio: 3 / 4; } }
+
         footer.page-foot {
             text-align: center; color: var(--muted); font-size: .78rem;
             padding: 26px 0 6px; border-top: 1px solid var(--border); margin-top: 8px;
@@ -650,11 +655,22 @@
                     </div>
                 </section>
 
+                <!-- ===== APRESENTAÇÃO ===== -->
+                <section class="reveal">
+                    <div class="cmd"><span class="prompt">$</span> <span class="command">open apresentacao-case-sre.pdf</span></div>
+                    <h2 class="sec-title">Apresentação do case</h2>
+                    <p class="sec-lead">Os mesmos pontos em formato de slides. <a href="apresentacao-case-sre.pdf" target="_blank" rel="noopener">Abrir em tela cheia <i class="bi bi-box-arrow-up-right"></i></a></p>
+                    <div class="pdf-frame">
+                        <iframe src="apresentacao-case-sre.pdf#view=FitH" title="Apresentação do case SRE em PDF" loading="lazy"></iframe>
+                    </div>
+                </section>
+
                 <!-- ===== CTA ===== -->
                 <section class="reveal">
                     <div class="cmd"><span class="prompt">$</span> <span class="command">ls -la ./links</span></div>
                     <div class="cta">
                         <a class="btn primary" id="repo-link" href="https://github.com/luiscruzcwb/case-sre-observabilidade" target="_blank" rel="noopener"><i class="bi bi-github"></i> Repositório do case</a>
+                        <a class="btn" href="apresentacao-case-sre.pdf" target="_blank" rel="noopener"><i class="bi bi-file-earmark-pdf"></i> Apresentação (PDF)</a>
                         <a class="btn" href="https://www.linkedin.com/in/luiscruzcwb/" target="_blank" rel="noopener"><i class="bi bi-linkedin"></i> LinkedIn</a>
                         <a class="btn" href="../"><i class="bi bi-house"></i> Voltar ao início</a>
                     </div>
