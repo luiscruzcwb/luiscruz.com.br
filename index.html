@@ -36,6 +36,10 @@
             padding: 0;
         }
 
+        /* Garante que [hidden] vença classes com display: flex/grid,
+           para que cada saída só apareça após o comando ser digitado */
+        [hidden] { display: none !important; }
+
         body {
             background-color: #0d1117;
             font-family: 'Fira Code', monospace;
@@ -122,6 +126,7 @@
 
         .section {
             margin-bottom: 4px;
+            transition: opacity 0.3s ease;
         }
 
         /* Command line */
@@ -185,8 +190,14 @@
             font-family: 'Fira Code', monospace;
             font-size: 0.9rem;
             line-height: 1.75;
-            white-space: pre-wrap;
-            word-wrap: break-word;
+            white-space: pre;
+            margin: 0;
+        }
+
+        @media (max-width: 640px) {
+            .json-output pre {
+                font-size: 0.74rem;
+            }
         }
 
         .json-key    { color: #d2a8ff; }
@@ -320,6 +331,70 @@
             .social-link { padding: 6px 10px; }
             .social-label { font-size: 0.8rem; }
         }
+
+        /* ── Easter egg: The Matrix ── */
+        .matrix-pill {
+            position: fixed;
+            right: 16px;
+            bottom: 16px;
+            z-index: 30;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.78rem;
+            color: #2ea043;
+            background: rgba(13, 17, 23, 0.7);
+            border: 1px solid rgba(46, 160, 67, 0.4);
+            border-radius: 999px;
+            padding: 6px 12px;
+            cursor: pointer;
+            user-select: none;
+            backdrop-filter: blur(4px);
+            opacity: 0.55;
+            transition: opacity 0.3s ease, color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        .matrix-pill:hover {
+            opacity: 1;
+            color: #3fb950;
+            text-shadow: 0 0 8px rgba(63, 185, 80, 0.7);
+        }
+
+        body:not(.matrix-mode) #matrix-msg::after {
+            content: '▋';
+            margin-left: 1px;
+            animation: blink 1s step-end infinite;
+        }
+
+        #matrix-rain {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        body.matrix-mode {
+            background-color: #000;
+        }
+
+        body.matrix-mode .terminal {
+            position: relative;
+            z-index: 1;
+            background-color: rgba(0, 10, 0, 0.78);
+            box-shadow: 0 0 0 1px rgba(0, 255, 65, 0.35), 0 0 40px rgba(0, 255, 65, 0.15);
+            filter: sepia(1) saturate(3.5) hue-rotate(75deg) brightness(0.95);
+        }
+
+        body.matrix-mode .matrix-pill {
+            color: #00ff41;
+            border-color: rgba(0, 255, 65, 0.6);
+            text-shadow: 0 0 8px rgba(0, 255, 65, 0.6);
+            opacity: 0.9;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            #matrix-rain { display: none; }
+        }
     </style>
 </head>
 
@@ -341,7 +416,7 @@
         <div class="terminal-body" role="log" aria-live="polite">
 
             <!-- whoami -->
-            <div class="section" id="sec-whoami">
+            <div class="section" id="sec-whoami" hidden>
                 <div class="command-line">
                     <span class="prompt" aria-hidden="true">user@luiscruz:~$</span>
                     <span class="command" id="cmd-whoami"></span>
@@ -356,7 +431,7 @@
             </div>
 
             <!-- cat about.txt -->
-            <div class="section" id="sec-about">
+            <div class="section" id="sec-about" hidden>
                 <div class="command-line">
                     <span class="prompt" aria-hidden="true">user@luiscruz:~$</span>
                     <span class="command" id="cmd-about"></span>
@@ -368,25 +443,25 @@
             </div>
 
             <!-- cat stack.json -->
-            <div class="section" id="sec-stack">
+            <div class="section" id="sec-stack" hidden>
                 <div class="command-line">
                     <span class="prompt" aria-hidden="true">user@luiscruz:~$</span>
                     <span class="command" id="cmd-stack"></span>
                 </div>
                 <div class="output json-output" id="out-stack" hidden>
                     <pre><span class="json-bracket">{</span>
-  <span class="json-key">"virtualização e infra"</span>: [<span class="json-string">"VMware ESXi"</span>, <span class="json-string">"Proxmox"</span>, <span class="json-string">"Docker"</span>, <span class="json-string">"Kubernetes (EKS/GKE)"</span>]<span class="json-comma">,</span>
-  <span class="json-key">"cloud operations"</span>:      [<span class="json-string">"AWS"</span>, <span class="json-string">"Google Cloud Platform"</span>, <span class="json-string">"Azure"</span>]<span class="json-comma">,</span>
-  <span class="json-key">"iac e automação"</span>:       [<span class="json-string">"Terraform"</span>, <span class="json-string">"Ansible"</span>, <span class="json-string">"GitHub Actions"</span>, <span class="json-string">"GitLab CI"</span>, <span class="json-string">"Python"</span>, <span class="json-string">"Shell Script"</span>, <span class="json-string">"Linux (Avançado)"</span>]<span class="json-comma">,</span>
-  <span class="json-key">"redes e segurança"</span>:     [<span class="json-string">"Fortinet NGFW"</span>, <span class="json-string">"VPN"</span>, <span class="json-string">"Active Directory"</span>, <span class="json-string">"LGPD/GDPR"</span>, <span class="json-string">"ITIL/COBIT"</span>]<span class="json-comma">,</span>
-  <span class="json-key">"monitoramento"</span>:         [<span class="json-string">"Zabbix"</span>, <span class="json-string">"Prometheus"</span>, <span class="json-string">"Grafana"</span>, <span class="json-string">"Dynatrace"</span>, <span class="json-string">"ELK Stack"</span>, <span class="json-string">"New Relic"</span>, <span class="json-string">"Sentry"</span>]<span class="json-comma">,</span>
-  <span class="json-key">"itsm e governança"</span>:     [<span class="json-string">"GLPI"</span>, <span class="json-string">"ITIL"</span>, <span class="json-string">"COBIT"</span>, <span class="json-string">"Incident Management"</span>, <span class="json-string">"On-call"</span>, <span class="json-string">"FinOps"</span>]
+  <span class="json-key">"virtualização e infra"</span>: [<span class="json-string">"Proxmox"</span>, <span class="json-string">"Docker"</span>, <span class="json-string">"Kubernetes"</span>]<span class="json-comma">,</span>
+  <span class="json-key">"cloud operations"</span>:      [<span class="json-string">"AWS"</span>, <span class="json-string">"GCP"</span>, <span class="json-string">"Azure"</span>]<span class="json-comma">,</span>
+  <span class="json-key">"iac e automação"</span>:       [<span class="json-string">"Terraform"</span>, <span class="json-string">"Ansible"</span>, <span class="json-string">"GitHub Actions"</span>, <span class="json-string">"Python"</span>]<span class="json-comma">,</span>
+  <span class="json-key">"redes e segurança"</span>:     [<span class="json-string">"Fortinet NGFW"</span>, <span class="json-string">"VPN"</span>, <span class="json-string">"Active Directory"</span>]<span class="json-comma">,</span>
+  <span class="json-key">"monitoramento"</span>:         [<span class="json-string">"Prometheus"</span>, <span class="json-string">"Grafana"</span>, <span class="json-string">"Zabbix"</span>, <span class="json-string">"Dynatrace"</span>]<span class="json-comma">,</span>
+  <span class="json-key">"itsm e governança"</span>:     [<span class="json-string">"GLPI"</span>, <span class="json-string">"ITIL"</span>, <span class="json-string">"Incident Management"</span>]
 <span class="json-bracket">}</span></pre>
                 </div>
             </div>
 
             <!-- ls ./certifications/ -->
-            <div class="section" id="sec-certs">
+            <div class="section" id="sec-certs" hidden>
                 <div class="command-line">
                     <span class="prompt" aria-hidden="true">user@luiscruz:~$</span>
                     <span class="command" id="cmd-certs"></span>
@@ -421,7 +496,7 @@
             </div>
 
             <!-- ls -la ./links -->
-            <div class="section" id="sec-links">
+            <div class="section" id="sec-links" hidden>
                 <div class="command-line">
                     <span class="prompt" aria-hidden="true">user@luiscruz:~$</span>
                     <span class="command" id="cmd-links"></span>
@@ -446,7 +521,7 @@
             </div>
 
             <!-- ./contact.sh -->
-            <div class="section" id="sec-contact">
+            <div class="section" id="sec-contact" hidden>
                 <div class="command-line">
                     <span class="prompt" aria-hidden="true">user@luiscruz:~$</span>
                     <span class="command" id="cmd-contact"></span>
@@ -484,6 +559,11 @@
         </div>
     </main>
 
+    <!-- Easter egg: The Matrix -->
+    <canvas id="matrix-rain" hidden aria-hidden="true"></canvas>
+    <button type="button" id="matrix-pill" class="matrix-pill"
+            title="Take the red pill" aria-label="Ativar modo Matrix"><span id="matrix-msg"></span><span id="matrix-emoji"> 💊</span></button>
+
     <script>
         const sequences = [
             { cmdId: 'cmd-whoami',  cmdText: 'whoami',        outId: 'out-whoami'  },
@@ -512,20 +592,22 @@
             });
         }
 
-        function showOutput(el) {
+        function showOutput(el, wait = 420) {
             el.removeAttribute('hidden');
             el.style.opacity = '0';
             requestAnimationFrame(() => requestAnimationFrame(() => {
                 el.style.opacity = '1';
             }));
-            return delay(420);
+            return delay(wait);
         }
 
         async function runTerminal() {
             await delay(300);
             for (const seq of sequences) {
+                const secEl = document.getElementById(seq.cmdId.replace('cmd-', 'sec-'));
                 const cmdEl = document.getElementById(seq.cmdId);
                 const outEl = document.getElementById(seq.outId);
+                await showOutput(secEl, 260);   // surge o novo prompt user@luiscruz:~$
                 await typeText(cmdEl, seq.cmdText);
                 await delay(160);
                 await showOutput(outEl);
@@ -535,6 +617,86 @@
         }
 
         document.addEventListener('DOMContentLoaded', runTerminal);
+
+        /* ── Easter egg: The Matrix ── */
+        (function () {
+            const pill = document.getElementById('matrix-pill');
+            const msgEl = document.getElementById('matrix-msg');
+            const emojiEl = document.getElementById('matrix-emoji');
+            const canvas = document.getElementById('matrix-rain');
+            const ctx = canvas.getContext('2d');
+
+            /* Mensagens icônicas digitadas em loop (modo desligado) */
+            const messages = ['Wake up, Neo...', 'The Matrix has you...', 'Follow the white rabbit...', 'Knock, knock, Neo.'];
+            let mi = 0, ci = 0, typingTimer = null;
+
+            const typeCycle = () => {
+                const full = messages[mi];
+                if (ci <= full.length) {
+                    msgEl.textContent = full.slice(0, ci++);
+                    typingTimer = setTimeout(typeCycle, 80 + Math.random() * 70);
+                } else {
+                    typingTimer = setTimeout(() => {
+                        ci = 0;
+                        mi = (mi + 1) % messages.length;
+                        typeCycle();
+                    }, 2000);
+                }
+            };
+
+            const startCycle = () => { if (!typingTimer) { ci = 0; mi = 0; typeCycle(); } };
+            const stopCycle = () => { if (typingTimer) { clearTimeout(typingTimer); typingTimer = null; } };
+            startCycle();
+            const glyphs = 'アイウエオカキクケコサシスセソタチツテトナニヌネノﾊﾋﾌﾍﾎ0123456789Z:."=*+-<>¦｜'.split('');
+            const fontSize = 16;
+            let rafId = null, drops = [];
+
+            const setup = () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                const columns = Math.ceil(canvas.width / fontSize);
+                drops = Array.from({ length: columns }, () => Math.random() * -50);
+            };
+
+            const draw = () => {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.07)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#00ff41';
+                ctx.font = fontSize + "px 'Fira Code', monospace";
+                for (let i = 0; i < drops.length; i++) {
+                    const ch = glyphs[Math.floor(Math.random() * glyphs.length)];
+                    ctx.fillText(ch, i * fontSize, drops[i] * fontSize);
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                    drops[i]++;
+                }
+                rafId = requestAnimationFrame(draw);
+            };
+
+            const enable = () => {
+                document.body.classList.add('matrix-mode');
+                canvas.removeAttribute('hidden');
+                setup();
+                if (!rafId) draw();
+                window.addEventListener('resize', setup);
+                stopCycle();
+                msgEl.textContent = '🔴 Voltar à realidade';
+                emojiEl.textContent = '';
+            };
+
+            const disable = () => {
+                document.body.classList.remove('matrix-mode');
+                canvas.setAttribute('hidden', '');
+                if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                window.removeEventListener('resize', setup);
+                emojiEl.textContent = ' 💊';
+                startCycle();
+            };
+
+            pill.addEventListener('click', () =>
+                document.body.classList.contains('matrix-mode') ? disable() : enable()
+            );
+        })();
     </script>
 
 </body>
