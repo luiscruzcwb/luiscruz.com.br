@@ -699,5 +699,19 @@
         })();
     </script>
 
+    <!-- OpenTelemetry RUM — instrumentação de página e interações -->
+    <script>
+        (function () {
+            var isLocal = ['localhost', '127.0.0.1'].includes(location.hostname);
+            var isProd  = location.hostname === 'luiscruz.com.br';
+            if (!isLocal && !isProd) return;
+
+            var s = document.createElement('script');
+            s.src  = '/js/otel-rum.js';
+            s.type = 'module';
+            document.head.appendChild(s);
+        })();
+    </script>
+
 </body>
 </html>
